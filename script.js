@@ -276,6 +276,8 @@ function loadDashboard() {
     updateRareItemsList();
     updateRewardsDisplay();
     updateImpactStats();
+    
+    checkWishlistStatus();
 }
 
 function updateFrequentItemsList() {
@@ -1044,11 +1046,40 @@ function completeTradeFinal(offer) {
 
 function checkSpendingLimit(amount) {
     const newTotal = spentThisMonth + amount;
-    if (newTotal > spendingLimit) { showSweetAlert('Batas Pengeluaran Terlampaui!', `Pembelian ini akan melebihi batas pengeluaran bulanan Anda. Coba opsi *secondhand* atau *trading*.`, 'warning'); return false; }
-    if (dailyPurchaseCount >= dailyPurchaseLimit) { showSweetAlert('Batas Pembelian Harian Tercapai!', `Anda telah mencapai batas pembelian harian. Lanjutkan berbelanja besok!`, 'warning'); return false; }
+    
+    // Notifikasi Peringatan Keras (Boros)
+    if (newTotal > spendingLimit) { 
+        showSweetAlert('🚨 Batas Pengeluaran Terlampaui!', `Pembelian ini akan melebihi batas pengeluaran bulanan Anda. Coba opsi *secondhand* atau *trading*.`, 'error'); 
+        return false; 
+    }
+    
+    // Notifikasi Peringatan Harian (Potensi Boros)
+    if (dailyPurchaseCount >= dailyPurchaseLimit) { 
+        showSweetAlert('⚠️ Batas Pembelian Harian Tercapai!', `Anda telah mencapai batas pembelian harian. Lanjutkan berbelanja besok!`, 'warning'); 
+        return false; 
+    }
+
+    // Notifikasi Soft Warning (Jika pembelian bukan yang pertama hari itu)
+    if (dailyPurchaseCount >= 1 && amount > 0) {
+        showNotification('🛒 Pembelian Harian ke-' + (dailyPurchaseCount + 1) + '. Ingat untuk berbelanja bijak!', 'warning', 5000);
+    }
+    
     return true;
 }
+function checkWishlistStatus() {
+    const readyToBuy = wishlistItems.filter(item => {
+        const daysAdded = Math.floor((new Date() - item.addedDate) / (1000 * 60 * 60 * 24));
+        return daysAdded >= 30;
+    });
 
+    if (readyToBuy.length > 0) {
+        showNotification(
+            `🎉 ${readyToBuy.length} Item Wishlist Siap Dibeli! Item telah melewati 30 hari masa tunggu.`, 
+            'success', 
+            8000
+        );
+    }
+}
 function showColorPalette() {
     const allColors = wardrobeItems.map(item => item.color);
     if (allColors.length === 0) {
