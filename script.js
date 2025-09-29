@@ -51,8 +51,15 @@ function getCategoryEmoji(category) {
     return emojis[category] || '👔';
 }
 function getCategoryColor(category) {
-    const colors = { 'tops': '#a8cc8a', 'bottoms': '#7ba05b', 'dresses': '#4a7c59', 'outerwear': '#2c5530', 'accessories': '#0a361b' };
-    return colors[category] || '#7ba05b';
+    // Menggunakan variabel CSS yang ada di :root (dari style.css)
+    const colors = { 
+        'tops': 'var(--color-dusty-orchid)', 
+        'bottoms': 'var(--color-sorbet-stem)', 
+        'dresses': 'var(--color-dusty-orchid)', 
+        'outerwear': 'var(--color-sorbet-stem)', 
+        'accessories': 'var(--color-petal-glaze)' 
+    };
+    return colors[category] || 'var(--light-green)';
 }
 function showNotification(message, type = 'success', duration = 3000) {
     const notification = document.createElement('div');
@@ -66,16 +73,41 @@ function showSweetAlert(title, content, type = 'info') {
     const alertModal = document.createElement('div');
     alertModal.className = 'modal active';
     alertModal.style.zIndex = '2500';
-    alertModal.innerHTML = `<div class="modal-content" style="max-width: 500px; text-align: center;"><button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button><div style="font-size: 3rem; margin-bottom: 1rem;">${type === 'success' ? '🎉' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : '💡'}</div><h2 style="color: var(--forest-green); margin-bottom: 1rem;">${title}</h2><div style="margin-bottom: 2rem;">${content}</div></div>`;
+    const icon = type === 'success' ? '🎉' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : '💡';
+    alertModal.innerHTML = `<div class="modal-content" style="max-width: 500px; text-align: center;"><button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button><div style="font-size: 3rem; margin-bottom: 1rem;">${icon}</div><h2 style="color: var(--forest-green); margin-bottom: 1rem;">${title}</h2><div style="margin-bottom: 2rem;">${content}</div></div>`;
     document.body.appendChild(alertModal);
 }
-function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
-function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+function openModal(modalId) { 
+    document.getElementById(modalId).classList.add('active'); 
+    if (modalId === 'cameraScanModal') {
+        startCamera();
+    }
+}
+function closeModal(modalId) { 
+    document.getElementById(modalId).classList.remove('active'); 
+    if (modalId === 'cameraScanModal') {
+        stopCamera();
+    }
+}
+
+// --- Page Switching & Menu ---
 function showPage(pageId, event) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
-    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-    if (event && event.target) { event.target.classList.add('active'); } else { const targetButton = document.querySelector(`.nav-tab[onclick*="showPage('${pageId}'"]`); if(targetButton) targetButton.classList.add('active'); }
+    
+    // Matikan semua tombol di desktop
+    document.querySelectorAll('.nav-tabs .nav-tab').forEach(tab => tab.classList.remove('active'));
+    // Matikan semua tombol di mobile
+    document.querySelectorAll('.nav-tabs-mobile .nav-tab').forEach(tab => tab.classList.remove('active'));
+    
+    // Aktifkan tombol yang sesuai di desktop
+    const desktopTargetButton = document.querySelector(`.nav-tabs .nav-tab[onclick*="showPage('${pageId}'"]`);
+    if(desktopTargetButton) desktopTargetButton.classList.add('active');
+    
+    // Aktifkan tombol yang sesuai di mobile (jika ada)
+    const mobileTargetButton = document.querySelector(`.nav-tabs-mobile .nav-tab[onclick*="showPage('${pageId}'"]`);
+    if(mobileTargetButton) mobileTargetButton.classList.add('active');
+
     if (pageId === 'dashboard') loadDashboard();
     if (pageId === 'wardrobe') loadWardrobe();
     if (pageId === 'shopping') loadShopping();
@@ -83,11 +115,117 @@ function showPage(pageId, event) {
     if (pageId === 'community') showCommunityTab('challenges');
     if (pageId === 'tradePage') loadTradePage();
 }
-function checkSpendingLimit(amount) {
-    const newTotal = spentThisMonth + amount;
-    if (newTotal > spendingLimit) { showSweetAlert('Batas Pengeluaran Terlampaui!', `Pembelian ini akan melebihi batas pengeluaran bulanan Anda. Coba opsi *secondhand* atau *trading*.`, 'warning'); return false; }
-    if (dailyPurchaseCount >= dailyPurchaseLimit) { showSweetAlert('Batas Pembelian Harian Tercapai!', `Anda telah mencapai batas pembelian harian. Lanjutkan berbelanja besok!`, 'warning'); return false; }
-    return true;
+
+function openMobileMenu(event) {
+    // Logic untuk membuka menu mobile
+    document.querySelectorAll('.nav-tabs-mobile .nav-tab').forEach(tab => tab.classList.remove('active'));
+    const desktopActiveTab = document.querySelector('.nav-tabs .nav-tab.active');
+    
+    if (desktopActiveTab) {
+        const pageName = desktopActiveTab.textContent.trim();
+        const mobileTargetTab = document.querySelector(`.nav-tabs-mobile .nav-tab[onclick*="${pageName}"]`);
+        if(mobileTargetTab) {
+            mobileTargetTab.classList.add('active');
+        }
+    }
+    openModal('mobileMenuModal');
+}
+
+// --- Camera Scan Item Functions (Inti dari permintaan Anda) ---
+const video = document.getElementById('cameraVideoFeed');
+const canvas = document.getElementById('canvas');
+const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+
+let stream;
+
+async function startCamera() {
+    const photoPreview = document.getElementById('photoPreview');
+    if (photoPreview) photoPreview.style.display = 'none';
+
+    document.querySelector('#cameraScanModal button[onclick="takePhoto()"]').style.display = 'block';
+    if (uploadPhotoBtn) uploadPhotoBtn.style.display = 'none';
+    if (video) video.style.display = 'block';
+
+    try {
+        // Mencoba mendapatkan stream video (kamera belakang jika ada)
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); 
+        if (video) video.srcObject = stream;
+    } catch (err) {
+        console.error("Error accessing camera: ", err);
+        const errorMessage = "Tidak dapat mengakses kamera. Pastikan Anda memberikan izin.";
+        const modalContent = document.getElementById('cameraScanModal')?.querySelector('.modal-content');
+        if (modalContent) modalContent.innerHTML = `<p style="color:red;">${errorMessage}</p>`;
+        showNotification(errorMessage, 'error', 5000);
+        if (video) video.style.display = 'none';
+    }
+}
+
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+    if (video) video.srcObject = null;
+}
+
+function takePhoto() {
+    if (!video || !video.srcObject || video.style.display === 'none') {
+        showNotification("Kamera belum aktif.", 'warning');
+        return;
+    }
+
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const dataUrl = canvas.toDataURL('image/png'); 
+    let photoPreview = document.getElementById('photoPreview');
+    if (photoPreview) {
+        photoPreview.src = dataUrl;
+        photoPreview.style.display = 'block'; 
+    }
+    
+    document.querySelector('#cameraScanModal button[onclick="takePhoto()"]').style.display = 'none'; 
+    if (uploadPhotoBtn) uploadPhotoBtn.style.display = 'block'; 
+    
+    if (video) video.style.display = 'none'; 
+    stopCamera(); 
+}
+
+// Event listener untuk tombol "Upload Foto"
+if (uploadPhotoBtn) {
+    uploadPhotoBtn.addEventListener('click', () => {
+        const photoPreview = document.getElementById('photoPreview');
+        const imageData = photoPreview ? photoPreview.src : '';
+
+        if (!imageData || imageData.length < 100) { showNotification('Ambil foto dulu!', 'error'); return; }
+        
+        showNotification('Foto terkirim! AI sedang memproses...', 'info', 3000);
+        uploadPhotoBtn.disabled = true;
+
+        setTimeout(() => {
+            // SIMULASI DATA IDENTIFIKASI AI
+            const scannedData = {
+                name: 'Jaket Bomber Hijau',
+                category: 'outerwear',
+                color: 'green',
+                price: 350000,
+                brand: 'Local Project'
+            };
+            
+            document.getElementById('itemName').value = scannedData.name;
+            document.getElementById('itemCategory').value = scannedData.category;
+            document.getElementById('itemColor').value = scannedData.color;
+            document.getElementById('itemPrice').value = scannedData.price;
+            document.getElementById('itemBrand').value = scannedData.brand;
+            
+            closeModal('cameraScanModal');
+            showNotification('Item berhasil diidentifikasi! Harap konfirmasi detailnya.', 'success', 4000);
+            openModal('addItemModal');
+
+            uploadPhotoBtn.disabled = false;
+        }, 3500);
+    });
 }
 
 // --- Dashboard & Status Loading ---
@@ -325,36 +463,7 @@ function markAsWorn(itemId) {
     }
 }
 
-// --- Item Addition/Scanning ---
-
-function startScan() {
-    const cameraView = document.getElementById('cameraView');
-    cameraView.innerHTML = `<span class="loading" style="opacity: 1; pointer-events: auto;">Scanning Item...</span>`;
-    
-    setTimeout(() => { cameraView.innerHTML = `✅ Ditemukan!`; }, 1500);
-
-    setTimeout(() => {
-        closeModal('cameraScanModal');
-        const scannedData = {
-            name: 'Jaket Bomber Hijau',
-            category: 'outerwear',
-            color: 'green',
-            price: 350000,
-            brand: 'Local Project'
-        };
-        
-        document.getElementById('itemName').value = scannedData.name;
-        document.getElementById('itemCategory').value = scannedData.category;
-        document.getElementById('itemColor').value = scannedData.color;
-        document.getElementById('itemPrice').value = scannedData.price;
-        document.getElementById('itemBrand').value = scannedData.brand;
-        
-        showNotification('Item berhasil diidentifikasi! Harap konfirmasi detailnya.', 'info', 4000);
-        openModal('addItemModal');
-        
-        cameraView.innerHTML = `<span class="loading" style="opacity: 1; pointer-events: auto;">Scanning...</span>`;
-    }, 3000); 
-}
+// --- Item Addition ---
 
 function addNewItem() {
     const itemName = document.getElementById('itemName').value.trim();
@@ -469,8 +578,8 @@ function generateOutfit() {
 
 function renderOutfit(outfit) {
     if (outfit.error) {
-         showSweetAlert('Gagal Generate Outfit', outfit.error, 'warning');
-         return;
+          showSweetAlert('Gagal Generate Outfit', outfit.error, 'warning');
+          return;
     }
 
     const outfitHtml = Object.values(outfit).map(item => `
@@ -549,7 +658,7 @@ function searchProducts() {
     );
 
     if (query.trim() === '') {
-         filteredProducts = marketplaceProducts;
+          filteredProducts = marketplaceProducts;
     }
 
     const grid = document.getElementById('productsGrid');
@@ -670,7 +779,7 @@ function updateBudgetDisplay() {
     document.getElementById('dailyPurchases').textContent = dailyPurchaseCount;
     document.getElementById('remainingBudget').textContent = formatPrice(remaining);
     const fillElement = document.getElementById('budgetFill');
-    if (percentage > 90) { fillElement.style.background = '#dc3545'; } else if (percentage > 70) { fillElement.style.background = '#ffc107'; } else { fillElement.style.background = 'var(--gradient-green)'; }
+    if (percentage > 90) { fillElement.style.background = '#dc3545'; } else if (percentage > 70) { fillElement.style.background = '#ffc107'; } else { fillElement.style.background = 'var(--primary-green)'; }
 }
 function loadShopping() { updateBudgetDisplay(); renderWishlist(); updateRewardsDisplay(); }
 function renderWishlist() {
@@ -714,8 +823,8 @@ function showUpcyclingSelection() {
     const upcycleableItems = wardrobeItems.filter(item => ['tops', 'bottoms', 'dresses'].includes(item.category));
     
     if (upcycleableItems.length === 0) {
-         showNotification('Tidak ada item yang cocok untuk upcycling (butuh Atasan, Bawahan, atau Dress).', 'warning');
-         return;
+          showNotification('Tidak ada item yang cocok untuk upcycling (butuh Atasan, Bawahan, atau Dress).', 'warning');
+          return;
     }
     
     const select = document.getElementById('upcycleItemSelect');
@@ -780,8 +889,8 @@ function showDonationOptions() {
     const donatableItems = wardrobeItems.filter(item => item.wearCount <= 1);
     
     if (donatableItems.length === 0) {
-         showSweetAlert('Tidak Ada Item Potensial Donasi', 'Item yang paling baik didonasikan adalah yang jarang dipakai atau memiliki nilai rendah. Anda bisa memilih item secara manual jika tetap ingin berdonasi.', 'warning');
-         return;
+          showSweetAlert('Tidak Ada Item Potensial Donasi', 'Item yang paling baik didonasikan adalah yang jarang dipakai atau memiliki nilai rendah. Anda bisa memilih item secara manual jika tetap ingin berdonasi.', 'warning');
+          return;
     }
     
     const listContainer = document.getElementById('donatableItemsList');
@@ -791,7 +900,7 @@ function showDonationOptions() {
                 <input type="checkbox" id="donate-${item.id}" value="${item.id}" style="margin-right: 10px; accent-color: var(--primary-green);">
                 <label for="donate-${item.id}"><strong>${item.emoji} ${item.name}</strong></label>
             </div>
-            <span style="font-size: 0.9rem; color: var(--text-light);">Dipakai ${item.wearCount}x</span>
+            <span style="font-size: 0.9rem; color: var(--text-dark);">Dipakai ${item.wearCount}x</span>
         </div>
     `).join('');
     
@@ -851,8 +960,8 @@ function viewTradeDetail(tradeId) {
     currentTradeOffer = offer;
     const userItem = wardrobeItems.find(item => item.id === offer.userItem);
     if (!userItem) {
-         showNotification('Item Anda yang akan ditukar sudah tidak ada di lemari.', 'error');
-         return;
+          showNotification('Item Anda yang akan ditukar sudah tidak ada di lemari.', 'error');
+          return;
     }
 
     const tradeItemInfo = document.getElementById('tradeItemInfo');
@@ -911,11 +1020,18 @@ function completeTradeFinal(offer) {
 
 // --- Other Placeholder Functions ---
 
+function checkSpendingLimit(amount) {
+    const newTotal = spentThisMonth + amount;
+    if (newTotal > spendingLimit) { showSweetAlert('Batas Pengeluaran Terlampaui!', `Pembelian ini akan melebihi batas pengeluaran bulanan Anda. Coba opsi *secondhand* atau *trading*.`, 'warning'); return false; }
+    if (dailyPurchaseCount >= dailyPurchaseLimit) { showSweetAlert('Batas Pembelian Harian Tercapai!', `Anda telah mencapai batas pembelian harian. Lanjutkan berbelanja besok!`, 'warning'); return false; }
+    return true;
+}
+
 function showColorPalette() {
     const allColors = wardrobeItems.map(item => item.color);
     if (allColors.length === 0) {
-         showNotification('Tambahkan item untuk rekomendasi warna!', 'warning');
-         return;
+          showNotification('Tambahkan item untuk rekomendasi warna!', 'warning');
+          return;
     }
     const uniqueColors = [...new Set(allColors)];
     const selectedColor = uniqueColors[Math.floor(Math.random() * uniqueColors.length)];
@@ -994,17 +1110,17 @@ function showWeatherRecommendations() {
 
 function updateNoBuyChallenge() {
     if (noBuyProgressDays < 30) {
-         noBuyProgressDays++; // Corrected logic to increment daily
-         document.getElementById('noBuyProgress').textContent = noBuyProgressDays;
-         document.querySelector('#challengesTab .budget-fill').style.width = (noBuyProgressDays / 30) * 100 + '%';
-         showNotification(`Hari ${noBuyProgressDays} selesai! Tinggal ${30 - noBuyProgressDays} hari lagi.`, 'success');
-         if (noBuyProgressDays === 30) {
-             userRewards.tradePoints += 50;
-             showSweetAlert('🏆 Challenge Completed!', 'Anda menyelesaikan 30-Day No-Buy Challenge! +50 Trade Points!', 'success');
-         }
-         loadDashboard();
+          noBuyProgressDays++; // Corrected logic to increment daily
+          document.getElementById('noBuyProgress').textContent = noBuyProgressDays;
+          document.querySelector('#challengesTab .budget-fill').style.width = (noBuyProgressDays / 30) * 100 + '%';
+          showNotification(`Hari ${noBuyProgressDays} selesai! Tinggal ${30 - noBuyProgressDays} hari lagi.`, 'success');
+          if (noBuyProgressDays === 30) {
+              userRewards.tradePoints += 50;
+              showSweetAlert('🏆 Challenge Completed!', 'Anda menyelesaikan 30-Day No-Buy Challenge! +50 Trade Points!', 'success');
+          }
+          loadDashboard();
     } else {
-         showNotification('Challenge sudah selesai! Selamat!', 'info');
+        showNotification('Challenge sudah selesai! Selamat!', 'info');
     }
 }
 
@@ -1046,8 +1162,8 @@ function showCommunityTab(tabId, event) {
     if (event && event.target) { 
         event.target.classList.add('active'); 
     } else {
-         const targetButton = document.querySelector(`.community-tab[onclick*="showCommunityTab('${tabId}'"]`);
-         if (targetButton) targetButton.classList.add('active');
+          const targetButton = document.querySelector(`.community-tab[onclick*="showCommunityTab('${tabId}'"]`);
+          if (targetButton) targetButton.classList.add('active');
     }
 }
 
@@ -1058,11 +1174,6 @@ function showItemBreakdown() { showSweetAlert('Item Breakdown', 'Menampilkan rin
 function showValueBreakdown() { showSweetAlert('Value Breakdown', 'Menampilkan nilai total pakaian dan distribusi per kategori.', 'info'); }
 function showCostPerWearAnalysis() { showSweetAlert('Cost/Wear Analysis', 'Menampilkan analisis biaya per pemakaian item.', 'info'); }
 function showSustainabilityTips() { showSweetAlert('Sustainability Tips', 'Menampilkan skor keberlanjutan dan tips personalisasi.', 'info'); }
-function joinChallenge() { userRewards.tradePoints += 20; showSweetAlert('Challenge Joined!', 'Anda telah bergabung dalam Weekly Style Challenge! +20 Trade Points.', 'success'); updateRewardsDisplay(); }
-function joinEvent() { showNotification('Pendaftaran event berhasil! Cek email Anda untuk detail.', 'success'); }
-function joinWorkshop() { showNotification('Pendaftaran workshop berhasil! Link Zoom akan dikirim.', 'success'); }
-function joinUpcyclingWorkshop() { showNotification('Pendaftaran workshop upcycling berhasil!', 'success'); }
-function showEducationContent(topic) { showNotification(`Menampilkan konten edukasi tentang ${topic.toUpperCase()}...`, 'info'); }
 function showRareItemsSuggestions() { showSweetAlert('Items Jarang Dipakai', 'Menampilkan item yang jarang dipakai dan saran styling.', 'info'); }
 function showTailorDetails(tailorName) { showNotification(`Menampilkan detail kontak dan arah ke ${tailorName}...`, 'info'); }
 
@@ -1074,54 +1185,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('click', function(event) {
         if (event.target.classList.contains('modal')) {
-            event.target.classList.remove('active');
+            const modalId = event.target.id;
+            closeModal(modalId);
         }
     });
     updateImpactStats();
 });
-
-function openMobileMenu(event) {
-    // Memastikan tombol yang diklik tidak aktif di menu mobile
-    document.querySelectorAll('.nav-tabs-mobile .nav-tab').forEach(tab => tab.classList.remove('active'));
-    
-    // Mengambil tombol yang saat ini aktif di desktop
-    const desktopActiveTab = document.querySelector('.nav-tabs .nav-tab.active');
-    
-    if (desktopActiveTab) {
-        const pageName = desktopActiveTab.textContent.trim();
-        const mobileTargetTab = document.querySelector(`.nav-tabs-mobile .nav-tab[onclick*="${pageName}"]`);
-        if(mobileTargetTab) {
-            mobileTargetTab.classList.add('active'); // Aktifkan tab yang sama di menu mobile
-        }
-    }
-
-    openModal('mobileMenuModal');
-}
-
-// ... (Sisa kode yang lain)
-
-// Fungsi showPage perlu diubah sedikit agar bisa bekerja dengan tombol di dalam modal menu.
-function showPage(pageId, event) {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    
-    // Matikan semua tombol di desktop
-    document.querySelectorAll('.nav-tabs .nav-tab').forEach(tab => tab.classList.remove('active'));
-    // Matikan semua tombol di mobile
-    document.querySelectorAll('.nav-tabs-mobile .nav-tab').forEach(tab => tab.classList.remove('active'));
-    
-    // Aktifkan tombol yang sesuai di desktop
-    const desktopTargetButton = document.querySelector(`.nav-tabs .nav-tab[onclick*="showPage('${pageId}'"]`);
-    if(desktopTargetButton) desktopTargetButton.classList.add('active');
-    
-    // Aktifkan tombol yang sesuai di mobile (jika ada)
-    const mobileTargetButton = document.querySelector(`.nav-tabs-mobile .nav-tab[onclick*="showPage('${pageId}'"]`);
-    if(mobileTargetButton) mobileTargetButton.classList.add('active');
-
-    if (pageId === 'dashboard') loadDashboard();
-    if (pageId === 'wardrobe') loadWardrobe();
-    if (pageId === 'shopping') loadShopping();
-    if (pageId === 'marketplace') loadMarketplace();
-    if (pageId === 'community') showCommunityTab('challenges');
-    if (pageId === 'tradePage') loadTradePage();
-}

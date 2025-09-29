@@ -247,7 +247,17 @@ body {
     color: var(--forest-green); /* Judul Dusty Orchid */
     margin-bottom: 1.5rem;
 }
+.quick-actions h3 {
+    font-family: 'Poppins', sans-serif; /* Terapkan Poppins ke judul */
+    color: var(--forest-green); 
+    margin-bottom: 1.5rem;
+}
 
+.action-btn {
+    font-family: 'Poppins', sans-serif; /* Terapkan Poppins ke tombol */
+    font-weight: 600; /* Atau 700 jika ingin lebih tebal */
+    /* ... properti lainnya ... */
+}
 .action-btn {
     display: block;
     width: 100%;

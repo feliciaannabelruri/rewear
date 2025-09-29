@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReWear - Smart Fashion Management</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -166,7 +167,6 @@
                     </div>
                 </div>
                 
-
                 <div id="shopping" class="page">
                     <div class="shopping-container">
                         <div class="shopping-main">
@@ -181,7 +181,7 @@
                                 <div class="budget-bar">
                                     <div id="budgetFill" class="budget-fill" style="width: 0%"></div>
                                 </div>
-                                <p style="margin-top: 0.5rem; color: var(--text-light);">Daily purchases: <span id="dailyPurchases">0</span>/2 | Remaining budget: <span id="remainingBudget">Rp 2,000,000</span></p>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">Daily purchases: <span id="dailyPurchases">0</span>/2 | Remaining budget: Rp <span id="remainingBudget">2,000,000</span></p>
                             </div>
                             
                             <div class="add-wishlist">
@@ -251,7 +251,7 @@
                 <div id="tradePage" class="page">
                     <h2 style="margin-bottom: 2rem;">🔄 ReWear Item Trading Hub</h2>
                     <div id="tradeOffersList">
-                    </div>
+                        </div>
                     <p style="margin-top: 2rem; color: var(--text-light); text-align: center;">Item yang tersedia untuk Trade adalah item dengan *wear count* kurang dari 3.</p>
                 </div>
 
@@ -360,7 +360,7 @@
                                 <span class="challenge-status">Baru</span>
                             </div>
                             <p>Tema minggu ini: "Monochrome Magic" - Ciptakan outfit keren dengan 1-2 warna saja!</p>
-                            <button class="btn-primary" style="margin-top: 1rem;" onclick="joinChallenge()">Join Challenge</button>
+                            <button class="btn-primary" onclick="joinChallenge()">Join Challenge</button>
                         </div>
                         
                         <div class="challenge-card">
@@ -401,17 +401,17 @@
                         <div class="challenge-card">
                             <h3>📈 Sustainability Achievements</h3>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
                                     <div style="font-size: 2rem;">🏆</div>
                                     <h4>Gold Sustainer</h4>
                                     <p>150+ trade points</p>
                                 </div>
-                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
                                     <div style="font-size: 2rem;">💚</div>
                                     <h4>Generous Donor</h4>
                                     <p>8 items donated</p>
                                 </div>
-                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
                                     <div style="font-size: 2rem;">🎨</div>
                                     <h4>Creative Upcycler</h4>
                                     <p>3 upcycling projects</p>
@@ -469,42 +469,42 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div id="profilePage" class="page">
-                <div class="wardrobe-container" style="grid-template-columns: 1fr;">
-                    <div class="wardrobe-main" style="max-width: 600px; margin: 0 auto;">
-                        <h2 style="margin-bottom: 2rem;">⚙️ Edit Profil & Pengaturan Akun</h2>
+                
+                <div id="profilePage" class="page">
+                    <div class="wardrobe-container" style="grid-template-columns: 1fr;">
+                        <div class="wardrobe-main" style="max-width: 600px; margin: 0 auto;">
+                            <h2 style="margin-bottom: 2rem;">⚙️ Edit Profil & Pengaturan Akun</h2>
 
-                        <div style="text-align: center; margin-bottom: 2rem;">
-                            <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 1rem;">D</div>
-                            <h3 id="profileUserName" style="color: var(--forest-green);">Diajeng (Gold Sustainer)</h3>
-                            <p id="profileUserEmail" style="color: var(--text-light);">user@rewear.app</p>
-                            <p style="margin-top: 1rem; font-size: 0.9rem;">Poin Trade: <strong id="profileTradePoints">150</strong> | Level: <strong id="profileUserLevel">Gold Sustainer</strong></p>
+                            <div style="text-align: center; margin-bottom: 2rem;">
+                                <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 1rem;">D</div>
+                                <h3 id="profileUserName" style="color: var(--forest-green);">Diajeng (Gold Sustainer)</h3>
+                                <p id="profileUserEmail" style="color: var(--text-light);">user@rewear.app</p>
+                                <p style="margin-top: 1rem; font-size: 0.9rem;">Poin Trade: <strong id="profileTradePoints">150</strong> | Level: <strong id="profileUserLevel">Gold Sustainer</strong></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editName" class="form-label">Nama Lengkap</label>
+                                <input type="text" id="editName" class="form-input" placeholder="Nama Anda">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <input type="email" id="editEmail" class="form-input" placeholder="Email Anda">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editLocation" class="form-label">Lokasi (untuk layanan terdekat)</label>
+                                <input type="text" id="editLocation" class="form-input" placeholder="Misal: Jakarta Selatan">
+                            </div>
+
+                            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--forest-green);">Pengaturan Budget</h3>
+                            <div class="form-group">
+                                <label for="editBudget" class="form-label">Batas Budget Belanja Bulanan (Rp)</label>
+                                <input type="number" id="editBudget" class="form-input" placeholder="Misal: 2000000">
+                            </div>
+
+                            <button class="btn-primary" onclick="saveProfileChanges()" style="width: 100%; margin-top: 1.5rem;">Simpan Perubahan Profil</button>
                         </div>
-
-                        <div class="form-group">
-                            <label for="editName" class="form-label">Nama Lengkap</label>
-                            <input type="text" id="editName" class="form-input" placeholder="Nama Anda">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editEmail" class="form-label">Email</label>
-                            <input type="email" id="editEmail" class="form-input" placeholder="Email Anda">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editLocation" class="form-label">Lokasi (untuk layanan terdekat)</label>
-                            <input type="text" id="editLocation" class="form-input" placeholder="Misal: Jakarta Selatan">
-                        </div>
-
-                        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--forest-green);">Pengaturan Budget</h3>
-                        <div class="form-group">
-                            <label for="editBudget" class="form-label">Batas Budget Belanja Bulanan (Rp)</label>
-                            <input type="number" id="editBudget" class="form-input" placeholder="Misal: 2000000">
-                        </div>
-
-                        <button class="btn-primary" onclick="saveProfileChanges()" style="width: 100%; margin-top: 1.5rem;">Simpan Perubahan Profil</button>
                     </div>
                 </div>
             </div>
@@ -525,6 +525,27 @@
             </nav>
         </div>
     </div>
+
+    <div id="cameraScanModal" class="modal">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('cameraScanModal')">&times;</button>
+            <h2 style="color: var(--forest-green);">📸 Scan Item Baru</h2>
+            
+            <p style="margin-bottom: 1rem;">Arahkan kamera ke pakaian Anda.</p>
+            
+            <video id="cameraVideoFeed" width="100%" height="auto" autoplay style="border-radius:12px; background:#333; display:none; object-fit: cover;"></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+            
+            <img id="photoPreview" src="" alt="Photo Preview" style="width:100%; display:none; margin-top:1rem; border-radius:12px;">
+            
+            <button class="btn-primary" style="margin-top:1rem;" onclick="takePhoto()">Ambil Foto</button>
+            
+            <button class="btn-primary" style="margin-top:1rem; display:none;" id="uploadPhotoBtn">Upload Foto & Identifikasi Item</button>
+            
+            <button class="btn-primary" style="background: #6c757d; margin-top: 0.5rem;" onclick="closeModal('cameraScanModal'); openModal('addItemModal')">Input Manual</button>
+        </div>
+    </div>
+
     <div id="addItemModal" class="modal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('addItemModal')">&times;</button>
@@ -566,19 +587,6 @@
                 <input type="text" id="itemBrand" class="form-input" placeholder="e.g., H&M, Zara, Local Brand">
             </div>
             <button class="btn-primary" onclick="addNewItem()">Tambah ke Lemari</button>
-        </div>
-    </div>
-    
-    <div id="cameraScanModal" class="modal">
-        <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <button class="close-btn" onclick="closeModal('cameraScanModal')">&times;</button>
-            <h2 style="color: var(--forest-green);">📸 Scan Item Baru</h2>
-            <div style="height: 300px; background: #333; border-radius: 20px; margin: 1.5rem 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; border: 4px solid var(--primary-green);" id="cameraView">
-                <span class="loading" style="opacity: 1; pointer-events: auto;">Scanning...</span>
-            </div>
-            <p>Arahkan kamera ke pakaian Anda. AI akan mengidentifikasi detailnya.</p>
-            <button class="btn-primary" onclick="startScan()">Mulai Scanning</button>
-            <button class="btn-primary" style="background: #6c757d; margin-top: 0.5rem;" onclick="closeModal('cameraScanModal'); openModal('addItemModal')">Input Manual</button>
         </div>
     </div>
     
@@ -667,6 +675,21 @@
         </div>
     </div>
 
+    <div id="mobileMenuModal" class="modal">
+        <div class="modal-content" style="max-width: 300px; padding: 1rem;"> 
+            <button class="close-btn" onclick="closeModal('mobileMenuModal')">&times;</button>
+            <h3 style="color: var(--forest-green); margin-bottom: 1rem;">Menu Navigasi</h3>
+            <nav class="nav-tabs-mobile" style="flex-direction: column; background: none; padding: 0;">
+                <button class="nav-tab active" onclick="showPage('dashboard', event); closeModal('mobileMenuModal')">Dashboard</button>
+                <button class="nav-tab" onclick="showPage('wardrobe', event); closeModal('mobileMenuModal')">Lemari Digital</button>
+                <button class="nav-tab" onclick="showPage('shopping', event); closeModal('mobileMenuModal')">Shopping Assistant</button>
+                <button class="nav-tab" onclick="showPage('marketplace', event); closeModal('mobileMenuModal')">Marketplace</button>
+                <button class="nav-tab" onclick="showPage('care', event); closeModal('mobileMenuModal')">Fashion Care</button>
+                <button class="nav-tab" onclick="showPage('community', event); closeModal('mobileMenuModal')">Komunitas</button>
+            </nav>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
