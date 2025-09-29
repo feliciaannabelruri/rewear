@@ -1,13 +1,14 @@
 // --- Data Storage (In-memory) ---
 let wardrobeItems = [
-    { id: 1, name: "Blouse Putih Basic", category: "tops", color: "white", price: 150000, brand: "Uniqlo", wearCount: 12, lastWorn: "2025-01-15", emoji: "👕" },
-    { id: 2, name: "Jeans Skinny Dark", category: "bottoms", color: "blue", price: 250000, brand: "Levi's", wearCount: 8, lastWorn: "2025-01-10", emoji: "👖" },
-    { id: 3, name: "Dress Floral Summer", category: "dresses", color: "pink", price: 300000, brand: "Zara", wearCount: 3, lastWorn: "2024-12-20", emoji: "👗" },
-    { id: 4, name: "Blazer Hitam Formal", category: "outerwear", color: "black", price: 450000, brand: "The Executive", wearCount: 15, lastWorn: "2025-01-20", emoji: "👔" },
-    { id: 5, name: "Kemeja Denim Kasual", category: "tops", color: "blue", price: 200000, brand: "Gap", wearCount: 2, lastWorn: "2024-12-15", emoji: "👕" },
-    { id: 6, name: "Celana Chino Beige", category: "bottoms", color: "brown", price: 180000, brand: "H&M", wearCount: 1, lastWorn: "2024-11-01", emoji: "👖" },
-    { id: 7, name: "T-Shirt Lusuh", category: "tops", color: "red", price: 50000, brand: "Local Brand", wearCount: 0, lastWorn: null, emoji: "👕" },
-    { id: 8, name: "Rok Mini Biru", category: "bottoms", color: "blue", price: 120000, brand: "Zara", wearCount: 1, lastWorn: "2024-10-01", emoji: "👖" }
+    // Pastikan item sesuai dengan nama file Anda
+    { id: 1, name: "Blouse Putih Basic", category: "tops", color: "white", price: 150000, brand: "Uniqlo", wearCount: 12, lastWorn: "2025-01-15", emoji: "👕", imageURL: "blouseputih.jpg" },
+    { id: 2, name: "Jeans Skinny Dark", category: "bottoms", color: "blue", price: 250000, brand: "Levi's", wearCount: 8, lastWorn: "2025-01-10", emoji: "👖", imageURL: "skinnyjeans.png" },
+    { id: 3, name: "Dress Floral Summer", category: "dresses", color: "pink", price: 300000, brand: "Zara", wearCount: 3, lastWorn: "2024-12-20", emoji: "👗", imageURL: "floralsummer.jpg" },
+    { id: 4, name: "Blazer Hitam Formal", category: "outerwear", color: "black", price: 450000, brand: "The Executive", wearCount: 15, lastWorn: "2025-01-20", emoji: "👔", imageURL: "blazerhitam.jpeg" },
+    { id: 5, name: "Kemeja Denim Kasual", category: "tops", color: "blue", price: 200000, brand: "Gap", wearCount: 2, lastWorn: "2024-12-15", emoji: "👕", imageURL: "kemejadenim.jpeg" },
+    { id: 6, name: "Celana Chino Beige", category: "bottoms", color: "brown", price: 180000, brand: "H&M", wearCount: 1, lastWorn: "2024-11-01", emoji: "👖", imageURL: "celanachino.jpg" },
+    { id: 7, name: "T-Shirt Lusuh", category: "tops", color: "red", price: 50000, brand: "Local Brand", wearCount: 0, lastWorn: null, emoji: "👕", imageURL: "tshirtlusuh.jpg" },
+    { id: 8, name: "Rok Mini Biru", category: "bottoms", color: "blue", price: 120000, brand: "Zara", wearCount: 1, lastWorn: "2024-10-01", emoji: "👖", imageURL: "rokminibiru.jpg" }
 ];
 
 let wishlistItems = [];
@@ -22,11 +23,11 @@ let noBuyProgressDays = 12; // Challenge progress
 
 // Marketplace Products
 const marketplaceProducts = [
-    { id: 1, name: "Vintage Denim Jacket", price: 180000, category: "secondhand", sustainability: "Pre-loved", emoji: "🧥", seller: "Thrift Corner", details: "Kondisi sangat baik, model klasik tahun 90-an." },
-    { id: 2, name: "Organic Cotton T-Shirt", price: 120000, category: "sustainable", sustainability: "GOTS Certified", emoji: "👕", seller: "EcoFashion", details: "Bahan katun organik bersertifikat, ramah lingkungan." },
-    { id: 3, name: "Handwoven Batik Dress", price: 350000, category: "local", sustainability: "Local Artisan", emoji: "👗", seller: "Batik Nusantara", details: "Dibuat dengan tangan oleh pengrajin lokal, mendukung ekonomi UMKM." },
-    { id: 4, name: "Designer Evening Gown", price: 50000, category: "rental", sustainability: "Rental - 3 days", emoji: "👰", seller: "Dress Rental Co", details: "Gaun desainer untuk acara spesial. Harga adalah biaya sewa 3 hari." },
-    { id: 5, name: "Sustainable Sneakers", price: 280000, category: "sustainable", sustainability: "Recycled Materials", emoji: "👟", seller: "Green Steps", details: "Sepatu dibuat dari 60% plastik daur ulang." }
+    { id: 1, name: "Vintage Denim Jacket", price: 180000, category: "secondhand", sustainability: "Pre-loved", emoji: "🧥", seller: "Thrift Corner", details: "Kondisi sangat baik, model klasik tahun 90-an.", imageURL: "jacketdenim.jpeg" },
+    { id: 2, name: "Organic Cotton T-Shirt", price: 120000, category: "sustainable", sustainability: "GOTS Certified", emoji: "👕", seller: "EcoFashion", details: "Bahan katun organik bersertifikat, ramah lingkungan.", imageURL: "organictshirt.jpeg" },
+    { id: 3, name: "Handwoven Batik Dress", price: 350000, category: "local", sustainability: "Local Artisan", emoji: "👗", seller: "Batik Nusantara", details: "Dibuat dengan tangan oleh pengrajin lokal, mendukung ekonomi UMKM.", imageURL: "batikdress.webp" },
+    { id: 4, name: "Designer Evening Gown", price: 50000, category: "rental", sustainability: "Rental - 3 days", emoji: "👰", seller: "Dress Rental Co", details: "Gaun desainer untuk acara spesial. Harga adalah biaya sewa 3 hari.", imageURL: "gown.webp" },
+    { id: 5, name: "Sustainable Sneakers", price: 280000, category: "sustainable", sustainability: "Recycled Materials", emoji: "👟", seller: "Green Steps", details: "Sepatu dibuat dari 60% plastik daur ulang.", imageURL: "sustainableshoes.jpg" }
 ];
 
 // Trade Offers Data
@@ -73,6 +74,7 @@ function showSweetAlert(title, content, type = 'info') {
     const alertModal = document.createElement('div');
     alertModal.className = 'modal active';
     alertModal.style.zIndex = '2500';
+    // Menambahkan emoji yang sesuai (perbaikan dari undefined)
     const icon = type === 'success' ? '🎉' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : '💡';
     alertModal.innerHTML = `<div class="modal-content" style="max-width: 500px; text-align: center;"><button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button><div style="font-size: 3rem; margin-bottom: 1rem;">${icon}</div><h2 style="color: var(--forest-green); margin-bottom: 1rem;">${title}</h2><div style="margin-bottom: 2rem;">${content}</div></div>`;
     document.body.appendChild(alertModal);
@@ -131,7 +133,7 @@ function openMobileMenu(event) {
     openModal('mobileMenuModal');
 }
 
-// --- Camera Scan Item Functions (Inti dari permintaan Anda) ---
+// --- Camera Scan Item Functions ---
 const video = document.getElementById('cameraVideoFeed');
 const canvas = document.getElementById('canvas');
 const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
@@ -178,7 +180,9 @@ function takePhoto() {
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    const dataUrl = canvas.toDataURL('image/png'); 
+    const dataUrl = canvas.toDataURL('image/png'); // Dapatkan gambar sebagai Data URL
+    
+    // Tampilkan Preview
     let photoPreview = document.getElementById('photoPreview');
     if (photoPreview) {
         photoPreview.src = dataUrl;
@@ -314,7 +318,7 @@ function showFrequentItemsDetail() {
                 ${frequentItems.map(item => `
                     <div style="background: var(--cream); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
                         <h4 style="color: var(--forest-green);">${item.emoji} ${item.name}</h4>
-                        <div class="image-placeholder">${item.emoji} Simulasi Gambar Item</div>
+                        <img src="${item.imageURL}" alt="${item.name}" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 0.5rem;"/>
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0; font-size: 0.9rem;">
                             <span>Dipakai: <strong>${item.wearCount}x</strong></span>
                             <span>CPW: <strong>${formatPrice(item.price / item.wearCount)}</strong></span>
@@ -378,9 +382,12 @@ function loadWardrobe() {
 
 function renderWardrobe(items = wardrobeItems) {
     const grid = document.getElementById('itemsGrid');
+    // Perbaikan: menggunakan gambar item yang benar dan CSS background image untuk fallback
     grid.innerHTML = items.map(item => `
         <div class="item-card" onclick="showItemDetail(${item.id})">
-            <div class="item-image" style="background: ${getCategoryColor(item.category)}">${item.emoji}</div>
+            <div class="item-image" style="background-image: url(${item.imageURL}); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;">
+                <img src="${item.imageURL}" alt="${item.name}" style="height: 100%; width: 100%; object-fit: cover; border-radius: 12px; display: block;"/>
+            </div>
             <div class="item-info">
                 <h4 title="${item.name}">${item.name}</h4>
                 <div class="item-stats">
@@ -428,11 +435,12 @@ function showItemDetail(itemId) {
     const item = wardrobeItems.find(i => i.id === itemId);
     if (!item) return;
 
+    // Perbaikan: menggunakan gambar item yang benar dan menghilangkan undefined/bintang
     showSweetAlert(
         `${item.emoji} Detail Item: ${item.name}`,
         `
             <div style="text-align: left;">
-                <div class="image-placeholder">${item.emoji} Gambar ${item.name}</div>
+                <img src="${item.imageURL}" alt="${item.name}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;"/>
                 <p><strong>Brand:</strong> ${item.brand}</p>
                 <p><strong>Kategori:</strong> ${item.category}</p>
                 <p><strong>Warna:</strong> ${item.color.charAt(0).toUpperCase() + item.color.slice(1)}</p>
@@ -486,7 +494,8 @@ function addNewItem() {
         brand: itemBrand,
         wearCount: 0,
         lastWorn: null,
-        emoji: getCategoryEmoji(itemCategory)
+        emoji: getCategoryEmoji(itemCategory),
+        imageURL: 'default-new-item.jpg' // Default image for manually added items
     };
     
     wardrobeItems.push(newItem);
@@ -593,11 +602,12 @@ function renderOutfit(outfit) {
     const mainItem = outfit.dresses || outfit.tops; 
     const mainItemId = mainItem ? mainItem.id : null;
 
+    // Perbaikan: Menghilangkan pemformatan markdown ** **
     showSweetAlert(
         '✨ Outfit Rekomendasi Terbaik Hari Ini!',
         `
             <div style="text-align: center; margin-bottom: 1rem;">
-                <p>AI merekomendasikan kombinasi ini untuk memaksimalkan penggunaan item yang jarang Anda pakai. **Cost/Wear terbaik!**</p>
+                <p>AI merekomendasikan kombinasi ini untuk memaksimalkan penggunaan item yang jarang Anda pakai. Cost/Wear terbaik!</p>
             </div>
             ${outfitHtml}
             ${mainItemId ? `<button class="btn-primary" style="margin-top: 1.5rem;" onclick="showItemDetail(${mainItemId})">Lihat Detail Item Utama</button>` : ''}
@@ -636,9 +646,12 @@ function filterProducts(category, event) {
         return;
     }
     
+    // Perbaikan: Menggunakan imageURL untuk gambar produk
     grid.innerHTML = filteredProducts.map(product => `
          <div class="product-card" onclick="viewProduct(${product.id})">
-             <div class="product-image" style="background: ${product.category === 'secondhand' ? '#f0ad4e' : product.category === 'sustainable' ? '#5cb85c' : '#5bc0de'}">${product.emoji}</div>
+             <div class="product-image" style="background-image: url(${product.imageURL}); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;">
+                 <img src="${product.imageURL}" alt="${product.name}" style="height: 100%; width: 100%; object-fit: cover; display: block;"/>
+             </div>
              <div class="product-info">
                  <h4 class="product-title">${product.name}</h4>
                  <div class="product-price">${formatPrice(product.price)}${product.category === 'rental' ? '/3 days' : ''}</div>
@@ -667,9 +680,12 @@ function searchProducts() {
         return;
     }
     
+    // Perbaikan: Menggunakan imageURL untuk gambar produk hasil pencarian
     grid.innerHTML = filteredProducts.map(product => `
          <div class="product-card" onclick="viewProduct(${product.id})">
-             <div class="product-image" style="background: ${product.category === 'secondhand' ? '#f0ad4e' : product.category === 'sustainable' ? '#5cb85c' : '#5bc0de'}">${product.emoji}</div>
+             <div class="product-image" style="background-image: url(${product.imageURL}); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;">
+                 <img src="${product.imageURL}" alt="${product.name}" style="height: 100%; width: 100%; object-fit: cover; display: block;"/>
+             </div>
              <div class="product-info">
                  <h4 class="product-title">${product.name}</h4>
                  <div class="product-price">${formatPrice(product.price)}${product.category === 'rental' ? '/3 days' : ''}</div>
@@ -710,7 +726,7 @@ function viewProduct(productId) {
         `
             <div style="text-align: left;">
                 <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div style="font-size: 4rem; margin-bottom: 0.5rem;">${product.emoji}</div>
+                    <img src="${product.imageURL}" alt="${product.name}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 0.5rem;"/>
                     <div class="product-price" style="font-size: 1.8rem; color: var(--primary-green); font-weight: bold; margin-bottom: 0.5rem;">
                         ${formatPrice(product.price)}${product.category === 'rental' ? '<span style="font-size: 0.9rem;"> / 3 days</span>' : ''}
                     </div>
@@ -758,7 +774,8 @@ function completePayment(method) {
             brand: product.seller, 
             wearCount: 0, 
             lastWorn: null, 
-            emoji: product.emoji 
+            emoji: product.emoji,
+            imageURL: product.imageURL
         }; 
         wardrobeItems.push(newItem);
     }
@@ -797,7 +814,7 @@ function purchaseFromWishlist(itemId) {
     if (!item || Math.floor((new Date() - item.addedDate) / (1000 * 60 * 60 * 24)) < 30) { showNotification('Item belum melewati masa tunggu 30 hari!', 'warning'); return; }
     if (!checkSpendingLimit(item.price)) { return; }
     removeFromWishlist(itemId); spentThisMonth += item.price; dailyPurchaseCount++; userRewards.tradePoints += 15;
-    const newWardrobeItem = { id: Date.now(), name: item.name, category: 'tops', color: 'blue', price: item.price, brand: 'Mindful Buy', wearCount: 0, lastWorn: null, emoji: '🛍️' }; wardrobeItems.push(newWardrobeItem);
+    const newWardrobeItem = { id: Date.now(), name: item.name, category: 'tops', color: 'blue', price: item.price, brand: 'Mindful Buy', wearCount: 0, lastWorn: null, emoji: '🛍️', imageURL: 'default-buy.jpg' }; wardrobeItems.push(newWardrobeItem);
     showSweetAlert('🎉 Pembelian Berhasil!', `${item.name} berhasil dibeli. +15 Poin untuk Pembelian Mindful!`, 'success');
     updateBudgetDisplay(); loadDashboard();
 }
@@ -843,6 +860,7 @@ function startUpcyclingProcess() {
     closeModal('upcyclingSelectionModal');
     
     const loadingContent = document.getElementById('upcyclingProcessContent');
+    // Perbaikan: Menghapus bintang **
     loadingContent.innerHTML = `
         <div class="wrap-loading">
             <div class="wrap-item">${item.emoji}</div>
@@ -872,12 +890,13 @@ function startUpcyclingProcess() {
             resultEmoji = '🧻';
         }
 
+        // Perbaikan: Menghilangkan bintang **
         loadingContent.innerHTML = `
             <div style="padding: 1rem;">
                 <h3 style="color: var(--primary-green); margin-bottom: 1rem;">🎉 Ide Upcycling Selesai!</h3>
                 <div style="font-size: 4rem; margin: 1rem 0;">${item.emoji} &rarr; ${resultEmoji}</div>
-                <h4>**${item.name}** diubah menjadi: **${resultName}**!</h4>
-                <p style="margin-top: 1rem;">Anda berhasil mengurangi sampah tekstil. **+15 Trade Points!**</p>
+                <h4>${item.name} diubah menjadi: ${resultName}!</h4>
+                <p style="margin-top: 1rem;">Anda berhasil mengurangi sampah tekstil. +15 Trade Points diterima!</p>
                 <button class="btn-primary" onclick="closeModal('upcyclingLoadingModal'); loadDashboard()" style="margin-top: 1.5rem;">Selesai</button>
             </div>
         `;
@@ -914,7 +933,8 @@ function confirmDonation() {
     const donatedItemsCount = checkedItems.length; wardrobeItems = wardrobeItems.filter(item => !checkedItems.includes(item.id));
     userRewards.donations += donatedItemsCount; userRewards.tradePoints += donatedItemsCount * 5;
     closeModal('donationSelectionModal');
-    showSweetAlert('🎉 Donasi Berhasil!', `<h4>Terima kasih atas donasi **${donatedItemsCount} item**!</h4><p>Donasi Anda akan disalurkan kepada **${targetName}**.</p><p style="margin-top: 1rem; color: var(--primary-green); font-weight: 600;">+${donatedItemsCount * 5} Trade Points diterima!</p>`, 'success');
+    // Perbaikan: Menghilangkan bintang **
+    showSweetAlert('🎉 Donasi Berhasil!', `<h4>Terima kasih atas donasi ${donatedItemsCount} item!</h4><p>Donasi Anda akan disalurkan kepada ${targetName}.</p><p style="margin-top: 1rem; color: var(--primary-green); font-weight: 600;">+${donatedItemsCount * 5} Trade Points diterima!</p>`, 'success');
     loadDashboard();
 }
 
@@ -923,7 +943,8 @@ function loadTradePage() {
     const tradeableItems = getRarelyWornItems();
 
     if (tradeableItems.length === 0) {
-        container.innerHTML = `<div class="challenge-card" style="text-align: center;"><h3>Anda Tidak Memiliki Item yang Perlu Ditukar</h3><p>Semua item Anda sering dipakai. Trade berlaku untuk item dengan Wear Count < 3. Teruslah pakai pakaian Anda!</p></div>`;
+        // Perbaikan: Menghilangkan bintang **
+        container.innerHTML = `<div class="challenge-card" style="text-align: center;"><h3>Anda Tidak Memiliki Item yang Perlu Ditukar</h3><p>Semua item Anda sering dipakai. Trade berlaku untuk item dengan Wear Count &lt; 3. Teruslah pakai pakaian Anda!</p></div>`;
         return;
     }
 
@@ -965,6 +986,7 @@ function viewTradeDetail(tradeId) {
     }
 
     const tradeItemInfo = document.getElementById('tradeItemInfo');
+    // Perbaikan: Menghilangkan bintang **
     tradeItemInfo.innerHTML = `
         <h3 style="color: var(--primary-green); text-align: center; margin-bottom: 1rem;">Proposal Trade</h3>
         <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; margin: 1rem 0; padding: 1.5rem; border: 1px solid var(--cream); border-radius: 12px;">
@@ -1014,7 +1036,7 @@ function completeTradeFinal(offer) {
     if (userItemIndex === -1) { showNotification('Gagal: Item Anda sudah tidak ditemukan di lemari.', 'error'); closeModal('tradeDetailModal'); return; }
     wardrobeItems.splice(userItemIndex, 1);
     const newItem = { id: Date.now(), name: offer.offerItem.name, category: offer.offerItem.category, color: offer.offerItem.color, price: 0, brand: 'Traded', wearCount: 0, lastWorn: null, emoji: offer.offerItem.emoji }; wardrobeItems.push(newItem); userRewards.tradePoints += 10;
-    closeModal('tradeDetailModal'); showSweetAlert('🎉 Trade Sukses!', `Penukaran **${newItem.name}** berhasil! Detail alamat akan dikirimkan. +10 Trade Points.`, 'success');
+    closeModal('tradeDetailModal'); showSweetAlert('🎉 Trade Sukses!', `Penukaran ${newItem.name} berhasil! Detail alamat akan dikirimkan. +10 Trade Points.`, 'success');
     loadDashboard(); loadTradePage();
 }
 
@@ -1151,7 +1173,7 @@ function updateImpactStats() {
 
 function showTutorial(type) { 
     const tutorials = { 'button': { title: 'Cara Jahit Kancing', steps: ['Siapkan jarum & benang', 'Jahit kancing 6-8 kali', 'Buat simpul kuat'], time: '10 min' }, 'hole': { title: 'Menambal Lubang Kecil', steps: ['Siapkan kain perca', 'Gunting lebih besar dari lubang', 'Jahit keliling dengan rapi'], time: '20 min' }, 'zipper': { title: 'Memperbaiki Resleting', steps: ['Bersihkan gigi resleting', 'Oleskan sabun batangan', 'Gerakkan perlahan'], time: '15 min' }, 'hem': { title: 'Memendekkan Celana', steps: ['Ukur panjang baru', 'Potong, sisakan kelim 3-4cm', 'Jahit kelim dengan tangan/mesin'], time: '30 min' }, 'upcycling-idea': { title: 'Ide Upcycling Dasar', steps: ['Jeans lama -> Tas Tote', 'T-shirt lama -> Kain Lap', 'Kemeja -> Scrunchie'], time: 'Variatif' } };
-    const t = tutorials[type]; showSweetAlert(`📚 ${t.title}`, `<div style="text-align: left;"><p><strong>Waktu Estimasi:</strong> ${t.time}</p><h4 style="margin-top: 1rem; color: var(--forest-green);">Langkah-langkah Singkat:</h4><ol style="margin-left: 1.5rem;">${t.steps.map(s => `<li>${s}</li>`).join('')}</ol><p style="margin-top: 1rem; font-style: italic;">"Memperbaiki adalah tindakan yang paling ramah lingkungan."</p></div>`, 'info');
+    const t = tutorials[type]; showSweetAlert(`📚 ${t.title}`, `<div style="text-align: left;"><p><strong>Waktu Estimasi:</strong> ${t.time}</p><h4 style="margin-top: 1rem; color: var(--forest-green);">Langkah-langkah Singkat:</h4><ol style="margin-left: 1.5rem;">${t.steps.map(s => `<li style="list-style-type: decimal;">${s}</li>`).join('')}</ol><p style="margin-top: 1rem; font-style: italic;">"Memperbaiki adalah tindakan yang paling ramah lingkungan."</p></div>`, 'info');
 }
 
 function showCommunityTab(tabId, event) {
@@ -1176,6 +1198,18 @@ function showCostPerWearAnalysis() { showSweetAlert('Cost/Wear Analysis', 'Menam
 function showSustainabilityTips() { showSweetAlert('Sustainability Tips', 'Menampilkan skor keberlanjutan dan tips personalisasi.', 'info'); }
 function showRareItemsSuggestions() { showSweetAlert('Items Jarang Dipakai', 'Menampilkan item yang jarang dipakai dan saran styling.', 'info'); }
 function showTailorDetails(tailorName) { showNotification(`Menampilkan detail kontak dan arah ke ${tailorName}...`, 'info'); }
+function showProfilePage() {
+    // Fungsi ini harus dimuat dari script.js, tetapi membutuhkan kode dari HTML
+    document.getElementById('editName').value = userData.name;
+    document.getElementById('editEmail').value = userData.email;
+    document.getElementById('editLocation').value = userData.location;
+    document.getElementById('editBudget').value = monthlyBudget;
+    document.getElementById('profileUserName').textContent = `${userData.name} (${userRewards.sustainabilityLevel})`;
+    document.getElementById('profileUserEmail').textContent = userData.email;
+    document.getElementById('profileTradePoints').textContent = userRewards.tradePoints;
+    document.getElementById('profileUserLevel').textContent = userRewards.sustainabilityLevel;
+    showPage('profilePage', { target: document.querySelector('.profile-avatar') });
+}
 
 // --- Initial Load ---
 document.addEventListener('DOMContentLoaded', function() {
