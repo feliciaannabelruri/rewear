@@ -1,0 +1,1517 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
+
+/* Penambahan untuk memastikan font dan ketebalan spesifik pada navigasi */
+.nav-tab {
+    /* Menargetkan semua elemen navigasi */
+    font-family: 'Poppins', sans-serif !important; /* Memastikan Poppins digunakan */
+    font-weight: 600 !important; /* Membuat teks menjadi Semi-Bold */
+    font-size: 0.95rem; /* Menjaga ukuran yang sudah ada */
+    /* ... properti lainnya ... */
+}
+
+/* Jika Anda ingin Bold sepenuhnya, gunakan 700 */
+.nav-tab.active,
+.nav-tab:hover {
+    font-weight: 700 !important; /* Membuat teks aktif/hover menjadi Bold */
+}
+
+:root {
+    /* PALET WARNA BARU (Dari Gambar Anda) */
+    --color-sorbet-stem: #C2DC80;        /* Hijau Muda (Latar Belakang Elemen/Card) */
+    --color-petal-glaze: #EA9CAF;        /* Pink Muda Lembut (Latar Belakang Halaman) */
+    --color-dusty-orchid: #D56989;       /* Pink Lebih Dalam/Bold (Primer, Teks Utama) */
+    --color-powdered-lilac-grey: #F3EEF1; /* Hampir Putih, Sangat Terang (White) */
+
+    /* Pemetaan ke Variabel CSS yang Ada (KOMBINASI BARU: PINK BACKGROUND, HIJAU CARD) */
+    --primary-green: var(--color-dusty-orchid); /* Primer: Pink Bold */
+    --dark-green: var(--color-dusty-orchid); /* Dark: Pink Bold */
+    --forest-green: var(--color-dusty-orchid); /* Headline: Pink Bold */
+    --light-green: var(--color-sorbet-stem); /* Hijau Muda */
+    --cream: var(--color-sorbet-stem); /* DIGANTI: Hijau Muda untuk background elemen (Card Background) */
+    --white: var(--color-powdered-lilac-grey); /* Powdered Lilac Grey */
+    --text-dark: var(--color-dusty-orchid); /* Teks: Pink Bold */
+    --text-light: #666666; /* Teks sekunder (tetap abu-abu) */
+    
+    /* Gradien tetap dibuat solid menggunakan warna primer untuk konsistensi */
+    --gradient-primary: var(--primary-green); 
+    --gradient-green: var(--primary-green); 
+    
+    --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.15);
+    --border-radius: 20px;
+}
+
+body {
+    font-family: 'Poppins'; 
+    line-height: 1.6;
+    color: var(--text-dark); /* Teks utama Dusty Orchid */
+    background: var(--color-petal-glaze); /* Latar belakang Petal Glaze (PINK MUDA) */
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    background: var(--white); /* Header Powdered Lilac Grey */
+    padding: 1rem 0;
+    box-shadow: var(--shadow-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--forest-green); /* Logo Dusty Orchid */
+}
+
+.logo-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 15px;
+    background: transparent;
+}
+.nav-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--light-green); /* Tabs background Sorbet Stem (Hijau Muda) */
+    padding: 0.5rem;
+    border-radius: 15px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.nav-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-tab {
+    flex-shrink: 0;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-dark); /* Teks tab Dusty Orchid */
+    font-weight: 500;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.nav-tab.active {
+    background: var(--white); /* Tab aktif Powdered Lilac Grey */
+    color: var(--primary-green); /* Teks tab aktif Dusty Orchid */
+    box-shadow: var(--shadow-light);
+}
+
+.nav-tab:hover {
+    color: var(--primary-green);
+    transform: translateY(-2px);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar {
+    width: 45px;
+    height: 45px;
+    background: var(--primary-green); /* Avatar Dusty Orchid */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Teks putih untuk kontras */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.1);
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* DASHBOARD HOME */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.main-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: var(--white); /* Card background Powdered Lilac Grey */
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-green); /* Icon Dusty Orchid */
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Teks putih untuk kontras */
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-green); /* Angka Dusty Orchid */
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.quick-actions {
+    background: var(--white); /* Quick actions background Powdered Lilac Grey */
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+}
+
+.quick-actions h3 {
+    color: var(--forest-green); /* Judul Dusty Orchid */
+    margin-bottom: 1.5rem;
+}
+
+.action-btn {
+    display: block;
+    width: 100%;
+    background: var(--primary-green); /* Tombol Dusty Orchid */
+    color: white; /* Teks putih untuk kontras */
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+/* DIGITAL WARDROBE */
+.wardrobe-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    min-height: calc(100vh - 200px); 
+}
+
+.wardrobe-sidebar {
+    background: var(--white); /* Sidebar background Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+    overflow-y: auto;
+}
+
+.filter-section {
+    margin-bottom: 2rem;
+}
+
+.filter-section h4 {
+    color: var(--forest-green); /* Judul Dusty Orchid */
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-option:hover {
+    transform: translateX(5px);
+}
+
+.filter-option input[type="checkbox"] {
+    accent-color: var(--primary-green);
+}
+
+.wardrobe-main {
+    background: var(--white); /* Konten utama wardrobe Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+    overflow-y: auto;
+}
+
+.wardrobe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.add-item-btn {
+    background: var(--primary-green); /* Tombol Dusty Orchid */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.add-item-btn:hover {
+    transform: translateY(-2px);
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.item-card {
+    background: var(--cream); /* Item card background Sorbet Stem (Hijau Muda) */
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-light);
+}
+
+.item-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(243, 238, 241, 0.4), transparent); /* Menggunakan Powdered Lilac Grey (white) baru */
+    transition: left 0.5s;
+}
+
+.item-card:hover::before {
+    left: 100%;
+}
+
+.item-image {
+    width: 100%;
+    height: 150px;
+    background: var(--primary-green); /* Gambar item Dusty Orchid */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.item-info h4 {
+    color: var(--forest-green); /* Judul item Dusty Orchid */
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.item-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+}
+
+.wear-count {
+    background: var(--primary-green); /* Wear count Dusty Orchid */
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+/* SHOPPING ASSISTANT */
+.shopping-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+}
+
+.shopping-main {
+    background: var(--white); /* Shopping main background Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+}
+
+.budget-tracker {
+    background: var(--cream); /* Budget tracker Sorbet Stem (Hijau Muda) */
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.budget-bar {
+    width: 100%;
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.budget-fill {
+    height: 100%;
+    background: var(--primary-green); /* Budget fill Dusty Orchid */
+    transition: width 0.3s ease;
+}
+
+.budget-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.wishlist-item {
+    background: var(--cream); /* Wishlist item Sorbet Stem (Hijau Muda) */
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.wishlist-item:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-light);
+}
+
+.wishlist-info h4 {
+    color: var(--forest-green); /* Judul wishlist Dusty Orchid */
+    margin-bottom: 0.5rem;
+}
+
+.countdown {
+    background: var(--primary-green); /* Countdown Dusty Orchid */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.shopping-sidebar {
+    background: var(--white); /* Shopping sidebar Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+}
+
+/* MARKETPLACE */
+.marketplace-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.search-bar {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1rem;
+    border: 2px solid var(--cream); /* Border Sorbet Stem */
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: poppins;
+}
+
+.search-input:focus {
+    border-color: var(--primary-green);
+    /* Menggunakan rgba dari primary-green baru (#D56989) */
+    box-shadow: 0 0 0 3px rgba(213, 105, 137, 0.1); 
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-green); /* Tombol search Dusty Orchid */
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.marketplace-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-chip {
+    background: var(--cream); /* Filter chip Sorbet Stem */
+    color: var(--text-dark); /* Teks Dusty Orchid */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-chip.active {
+    background: var(--primary-green); /* Filter chip aktif Dusty Orchid */
+    color: white;
+}
+
+.filter-chip:hover {
+    transform: translateY(-2px);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.product-card {
+    background: var(--white); /* Product card background Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.product-card::after {
+    content: '🛒 Lihat Detail';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    background: var(--primary-green); /* Detail tombol Dusty Orchid */
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    transition: bottom 0.3s ease;
+    font-weight: 600;
+}
+
+.product-card:hover::after {
+    bottom: 0;
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    background: var(--primary-green); /* Product image Dusty Orchid */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 4rem;
+}
+
+.product-info {
+    padding: 1.5rem;
+}
+
+.product-title {
+    font-weight: 600;
+    color: var(--forest-green); /* Judul produk Dusty Orchid */
+    margin-bottom: 0.5rem;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-green); /* Harga Dusty Orchid */
+    margin-bottom: 0.5rem;
+}
+
+.sustainability-badge {
+    background: var(--light-green); /* Badge Sorbet Stem */
+    color: var(--forest-green); /* Teks badge Dusty Orchid */
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* FASHION CARE HUB */
+.care-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.care-section {
+    background: var(--white); /* Care section background Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+}
+
+.care-section h3 {
+    color: var(--forest-green); /* Judul Dusty Orchid */
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.care-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-green); /* Icon Dusty Orchid */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.care-tips {
+    list-style: none;
+}
+
+.care-tips li, .care-tips div {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--cream); /* Border Sorbet Stem */
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.care-tips li::before, .care-tips div::before {
+    content: '✓';
+    background: var(--primary-green); /* Centang Dusty Orchid */
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.tutorial-btn, .upcycling-btn {
+    display: block;
+    width: 100%;
+    background: var(--cream); /* Tombol Sorbet Stem */
+    border: 2px solid transparent;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: poppins;
+    color: var(--text-dark); /* Teks Dusty Orchid */
+}
+
+.tutorial-btn:hover, .upcycling-btn:hover {
+    background: var(--white);
+    border-color: var(--primary-green);
+    transform: translateX(5px);
+}
+
+.tailor-item {
+    background: var(--cream); /* Tailor item Sorbet Stem */
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.tailor-item h4 {
+    color: var(--forest-green); /* Judul Dusty Orchid */
+    margin-bottom: 0.5rem;
+}
+
+.tailor-item p {
+    margin: 0.3rem 0;
+    color: var(--text-dark); /* Teks Dusty Orchid */
+    font-size: 0.85rem;
+}
+
+/* COMMUNITY */
+.community-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.community-tab {
+    background: var(--cream); /* Tab komunitas Sorbet Stem */
+    color: var(--text-dark); /* Teks Dusty Orchid */
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.community-tab.active {
+    background: var(--primary-green); /* Tab aktif Dusty Orchid */
+    color: white;
+}
+
+.community-tab:hover {
+    transform: translateY(-2px);
+}
+
+.community-content {
+    display: none;
+}
+
+.community-content.active {
+    display: block;
+}
+
+.challenge-card {
+    background: var(--white); /* Challenge card background Powdered Lilac Grey */
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.challenge-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-heavy);
+}
+
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.challenge-title {
+    color: var(--forest-green); /* Judul Dusty Orchid */
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.challenge-status {
+    background: var(--light-green); /* Status challenge Sorbet Stem */
+    color: var(--forest-green); /* Teks Dusty Orchid */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.impact-dashboard {
+    background: var(--primary-green); /* Impact dashboard Dusty Orchid */
+    color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.impact-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.impact-stat {
+    text-align: center;
+}
+
+.impact-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+    
+.image-placeholder {
+    height: 120px;
+    background: var(--cream); /* Placeholder image Sorbet Stem */
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark); /* Teks Dusty Orchid */
+    font-size: 2rem;
+    border: 1px dashed var(--primary-green); /* Border Dusty Orchid */
+}
+    
+.trade-card {
+    background: var(--cream); /* Trade card Sorbet Stem */
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+    
+.trade-card:hover {
+    background: var(--light-green); /* Hover Sorbet Stem */
+}
+
+/* MODALS */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--white); /* Modal background Powdered Lilac Grey */
+    margin: 2rem;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-dark); /* Tombol close Dusty Orchid */
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: var(--cream);
+    color: var(--text-dark);
+    transform: scale(1.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--forest-green); /* Label form Dusty Orchid */
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--cream); /* Border Sorbet Stem */
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: poppins;
+}
+
+.form-input:focus {
+    border-color: var(--primary-green);
+    /* Menggunakan rgba dari primary-green baru (#D56989) */
+    box-shadow: 0 0 0 3px rgba(213, 105, 137, 0.1); 
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--cream); /* Border Sorbet Stem */
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    background: var(--white); /* Background Powdered Lilac Grey */
+    transition: all 0.3s ease;
+    font-family: poppins;
+}
+
+.form-select:focus {
+    border-color: var(--primary-green);
+    /* Menggunakan rgba dari primary-green baru (#D56989) */
+    box-shadow: 0 0 0 3px rgba(213, 105, 137, 0.1);
+}
+
+.btn-primary {
+    background: var(--primary-green); /* Tombol primer Dusty Orchid */
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-family: poppins;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+/* Loading/Scanner Animation */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 3px solid var(--cream); /* Border Sorbet Stem */
+    border-top: 3px solid var(--primary-green); /* Top border Dusty Orchid */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Upcycling Wrap Effect */
+@keyframes wrap-effect {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; border-color: var(--light-green); } 
+    50% { transform: scale(1.1) rotate(180deg); opacity: 0.5; border-color: var(--primary-green); }
+    100% { transform: scale(1) rotate(360deg); opacity: 1; border-color: var(--dark-green); }
+}
+.wrap-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+.wrap-item {
+    font-size: 4rem;
+    animation: wrap-effect 1.5s infinite ease-in-out;
+    padding: 10px;
+    border: 5px solid var(--light-green); 
+    border-radius: 15px;
+    color: var(--primary-green);
+}
+
+/* Custom Notification Style (Must be added manually as it's generated by JS) */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-heavy);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease-out;
+    z-index: 3000;
+    min-width: 300px;
+}
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.notification.success { border-left: 5px solid var(--primary-green); }
+.notification.warning { border-left: 5px solid var(--primary-green); } /* Pink Bold untuk warning */
+.notification.error { border-left: 5px solid red; } 
+.notification.info { border-left: 5px solid var(--light-green); } /* Sorbet Stem untuk info */
+
+/* ------------------------------------- */
+/* --- RESPONSIVENESS (MEDIA QUERIES) --- */
+/* ------------------------------------- */
+
+/* Untuk layar kecil (Ponsel - Max 768px) */
+@media (max-width: 1024px) {
+    /* Umum */
+    .container {
+        padding: 0 1rem;
+    }
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    /* HEADER: Penyesuaian Navigasi untuk Mobile */
+    .header-container {
+        padding: 0 1rem;
+        flex-wrap: wrap; 
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    .nav-tabs {
+        width: 100%;
+        margin-top: 1rem;
+        padding: 0.3rem;
+        justify-content: flex-start; 
+    }
+
+    .nav-tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* DASHBOARD: Ubah tata letak grid menjadi tumpukan */
+    .dashboard-grid {
+        grid-template-columns: 1fr; 
+        gap: 1.5rem;
+    }
+
+    /* Grid Stats: Ubah ke 2 kolom saja */
+    .main-stats {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    /* QUICK ACTIONS - tetap 100% width, tapi padding disesuaikan */
+    .quick-actions {
+        padding: 1.5rem;
+    }
+
+    /* WARDROBE: Sidebar dan Konten Utama ditumpuk */
+    .wardrobe-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        min-height: auto;
+    }
+    /* Tambahkan style untuk tombol menu mobile */
+.mobile-menu-btn {
+    display: none; 
+    background: var(--light-green);
+    color: var(--forest-green);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* Duplikasi style nav-tabs untuk menu vertikal */
+.nav-tabs-mobile .nav-tab {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    background: var(--cream);
+    color: var(--text-dark);
+}
+
+.nav-tabs-mobile .nav-tab.active {
+    background: var(--primary-green) !important; 
+    color: var(--white) !important;
+    box-shadow: none !important;
+}
+
+/* Ubah style modal content untuk menu mobile */
+#mobileMenuModal .modal-content {
+    animation: slideInLeft 0.3s ease-out;
+    margin: 0;
+    max-width: 80vw;
+    height: 100%;
+    border-radius: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* ------------------------------------- */
+/* --- RESPONSIVENESS (MEDIA QUERIES) --- */
+/* ------------------------------------- */
+
+/* Untuk layar kecil (Ponsel - Max 768px) */
+@media (max-width: 1024px) {
+    /* HEADER FIX */
+    .header-container {
+        padding: 0 1rem;
+        flex-wrap: nowrap; 
+        justify-content: space-between;
+    }
+    
+    /* 1. Sembunyikan navigasi panjang di HP */
+    .nav-tabs {
+        display: none; 
+    }
+
+    /* 2. Tampilkan tombol menu hamburger di HP */
+    .mobile-menu-btn {
+        display: block;
+        order: 1; 
+        margin-right: 1rem;
+    }
+    
+    .logo {
+        order: 2; 
+        flex-grow: 1; 
+    }
+
+    .user-profile {
+        order: 3; 
+    }
+    /* END HEADER FIX */
+
+    /* Umum */
+    .container {
+        padding: 0 1rem;
+    }
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    /* DASHBOARD: Ubah tata letak grid menjadi tumpukan */
+    .dashboard-grid {
+        grid-template-columns: 1fr; 
+        gap: 1.5rem;
+    }
+
+    /* Grid Stats: Ubah ke 2 kolom saja */
+    .main-stats {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    /* WARDROBE: Sidebar dan Konten Utama ditumpuk */
+    .wardrobe-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        min-height: auto;
+    }
+    
+    .wardrobe-sidebar {
+        order: 1; 
+    }
+    
+    .wardrobe-main {
+        order: 2;
+        padding: 1.5rem;
+    }
+    
+    .wardrobe-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .add-item-btn {
+        width: 100%; 
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 1rem;
+    }
+    
+    .item-image {
+        height: 120px;
+        font-size: 2rem;
+    }
+
+    /* SHOPPING ASSISTANT: Sidebar dan Main ditumpuk */
+    .shopping-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .add-wishlist > div {
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+    
+    .add-wishlist input {
+        width: 100% !important;
+    }
+
+    /* MARKETPLACE: Search bar diperkecil */
+    .marketplace-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    /* FASHION CARE HUB: Tumpuk kolom */
+    .care-sections {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* COMMUNITY: Tumpuk kolom */
+    .impact-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* MODAL: Sesuaikan ukuran */
+    .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .close-btn {
+        right: 0.5rem;
+        top: 0.5rem;
+    }
+}
+
+/* Untuk perangkat tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Pastikan menu mobile tersembunyi dan menu desktop terlihat */
+    .mobile-menu-btn {
+        display: none !important; 
+    }
+    .nav-tabs {
+        display: flex !important; 
+    }
+
+    .header-container {
+        padding: 0 1.5rem;
+        flex-wrap: nowrap; 
+    }
+    
+    .nav-tabs {
+        width: auto;
+        margin-top: 0;
+    }
+
+    /* Dashbord tetap 2 kolom, tapi sidebar lebih kecil */
+    .dashboard-grid {
+        grid-template-columns: 1fr 300px;
+    }
+
+    /* Wardrobe tetap 2 kolom, tapi sidebar lebih kecil */
+    .wardrobe-container {
+        grid-template-columns: 250px 1fr;
+    }
+
+    /* Shopping tetap 2 kolom, tapi sidebar lebih kecil */
+    .shopping-container {
+        grid-template-columns: 1fr 350px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+    /* Di mobile, sidebar harus berada di atas konten utama */
+    .wardrobe-sidebar {
+        order: 1; 
+    }
+    
+    .wardrobe-main {
+        order: 2;
+        padding: 1.5rem;
+    }
+    
+    .wardrobe-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .add-item-btn {
+        width: 100%; 
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+        gap: 1rem;
+    }
+    
+    .item-image {
+        height: 120px;
+        font-size: 2rem;
+    }
+
+    /* SHOPPING ASSISTANT: Sidebar dan Main ditumpuk */
+    .shopping-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Penyesuaian input wishlist */
+    .add-wishlist > div {
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+    
+    .add-wishlist input {
+        width: 100% !important;
+    }
+
+    /* MARKETPLACE: Search bar diperkecil */
+    .marketplace-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .product-image {
+        height: 150px;
+        font-size: 3rem;
+    }
+
+    /* FASHION CARE HUB: Tumpuk kolom */
+    .care-sections {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* COMMUNITY: Tumpuk kolom */
+    .impact-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* MODAL: Sesuaikan ukuran dan posisi tombol close */
+    .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .close-btn {
+        right: 0.5rem;
+        top: 0.5rem;
+    }
+}
+
+/* Untuk perangkat tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Header container lebih luas */
+    .header-container {
+        padding: 0 1.5rem;
+        flex-wrap: nowrap; 
+    }
+    
+    .nav-tabs {
+        width: auto;
+        margin-top: 0;
+    }
+
+    /* Dashbord tetap 2 kolom, tapi sidebar lebih kecil */
+    .dashboard-grid {
+        grid-template-columns: 1fr 300px;
+    }
+
+    /* Wardrobe tetap 2 kolom, tapi sidebar lebih kecil */
+    .wardrobe-container {
+        grid-template-columns: 250px 1fr;
+    }
+
+    /* Shopping tetap 2 kolom, tapi sidebar lebih kecil */
+    .shopping-container {
+        grid-template-columns: 1fr 350px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
