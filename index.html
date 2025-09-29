@@ -1,0 +1,2785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Smart Fashion Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #7ba05b;
+            --dark-green: #4a7c59;
+            --forest-green: #2c5530;
+            --light-green: #a8cc8a;
+            --cream: #f8fffe;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-green: linear-gradient(45deg, #7ba05b, #4a7c59);
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f5f7fa;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--forest-green);
+        }
+
+        .logo-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 15px;
+    background: transparent;
+}
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--cream);
+            padding: 0.5rem;
+            border-radius: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            flex-shrink: 0;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-tab.active {
+            background: var(--white);
+            color: var(--primary-green);
+            box-shadow: var(--shadow-light);
+        }
+
+        .nav-tab:hover {
+            color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* DASHBOARD HOME */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .main-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-green);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+        }
+
+        .quick-actions h3 {
+            color: var(--forest-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            background: var(--gradient-green);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* DIGITAL WARDROBE */
+        .wardrobe-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            min-height: calc(100vh - 200px); 
+        }
+
+        .wardrobe-sidebar {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            overflow-y: auto;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h4 {
+            color: var(--forest-green);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-option:hover {
+            transform: translateX(5px);
+        }
+
+        .filter-option input[type="checkbox"] {
+            accent-color: var(--primary-green);
+        }
+
+        .wardrobe-main {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            overflow-y: auto;
+        }
+
+        .wardrobe-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .add-item-btn {
+            background: var(--gradient-green);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-item-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item-card {
+            background: var(--cream);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .item-card:hover::before {
+            left: 100%;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 150px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-info h4 {
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .item-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .wear-count {
+            background: var(--primary-green);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        /* SHOPPING ASSISTANT */
+        .shopping-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .shopping-main {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .budget-tracker {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .budget-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .budget-fill {
+            height: 100%;
+            background: var(--gradient-green);
+            transition: width 0.3s ease;
+        }
+
+        .budget-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .wishlist-item {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .wishlist-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .wishlist-info h4 {
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown {
+            background: var(--primary-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .shopping-sidebar {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        /* MARKETPLACE */
+        .marketplace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 2px solid var(--cream);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(123, 160, 91, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-green);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .marketplace-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            background: var(--cream);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip.active {
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .filter-chip:hover {
+            transform: translateY(-2px);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .product-card::after {
+            content: '🛒 Lihat Detail';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: var(--gradient-green);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            transition: bottom 0.3s ease;
+            font-weight: 600;
+        }
+
+        .product-card:hover::after {
+            bottom: 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-weight: 600;
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .sustainability-badge {
+            display: inline-block;
+            background: var(--light-green);
+            color: var(--forest-green);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* FASHION CARE HUB */
+        .care-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .care-section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .care-section h3 {
+            color: var(--forest-green);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .care-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .care-tips {
+            list-style: none;
+        }
+
+        .care-tips li, .care-tips div {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--cream);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .care-tips li::before, .care-tips div::before {
+            content: '✓';
+            background: var(--light-green);
+            color: var(--forest-green);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .tutorial-btn, .upcycling-btn {
+            display: block;
+            width: 100%;
+            background: var(--cream);
+            border: 2px solid transparent;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .tutorial-btn:hover, .upcycling-btn:hover {
+            background: var(--white);
+            border-color: var(--primary-green);
+            transform: translateX(5px);
+        }
+
+        .tailor-item {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tailor-item h4 {
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .tailor-item p {
+            margin: 0.3rem 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* COMMUNITY */
+        .community-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .community-tab {
+            background: var(--cream);
+            color: var(--text-dark);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .community-tab.active {
+            background: var(--gradient-green);
+            color: white;
+        }
+
+        .community-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        .community-content {
+            display: none;
+        }
+
+        .community-content.active {
+            display: block;
+        }
+
+        .challenge-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .challenge-card:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-title {
+            color: var(--forest-green);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .challenge-status {
+            background: var(--light-green);
+            color: var(--forest-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .impact-dashboard {
+            background: var(--gradient-green);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .impact-stat {
+            text-align: center;
+        }
+
+        .impact-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-placeholder {
+            height: 120px;
+            background: var(--cream);
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 2rem;
+            border: 1px dashed var(--light-green);
+        }
+        
+        .trade-card {
+            background: var(--cream);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .trade-card:hover {
+            background: var(--light-green);
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 2rem;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--cream);
+            color: var(--text-dark);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--forest-green);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--cream);
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(123, 160, 91, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--cream);
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            background: white;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(123, 160, 91, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--gradient-green);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        /* Loading/Scanner Animation */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            margin: -15px 0 0 -15px;
+            border: 3px solid var(--cream);
+            border-top: 3px solid var(--primary-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Upcycling Wrap Effect */
+        @keyframes wrap-effect {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; border-color: yellow; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.5; border-color: var(--primary-green); }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; border-color: var(--dark-green); }
+        }
+        .wrap-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        .wrap-item {
+            font-size: 4rem;
+            animation: wrap-effect 1.5s infinite ease-in-out;
+            padding: 10px;
+            border: 5px solid yellow;
+            border-radius: 15px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="header-container">
+                <div class="logo">
+    <img src="rewear.png" alt="ReWear Logo" class="logo-image">  <span>ReWear</span>
+</div>
+                
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" onclick="showPage('dashboard', event)">Dashboard</button>
+                    <button class="nav-tab" onclick="showPage('wardrobe', event)">Lemari Digital</button>
+                    <button class="nav-tab" onclick="showPage('shopping', event)">Shopping Assistant</button>
+                    <button class="nav-tab" onclick="showPage('marketplace', event)">Marketplace</button>
+                    <button class="nav-tab" onclick="showPage('care', event)">Fashion Care</button>
+                    <button class="nav-tab" onclick="showPage('community', event)">Komunitas</button>
+                </nav>
+                
+                <div class="user-profile">
+                    <div class="profile-avatar" onclick="showProfilePage()">D</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div id="dashboard" class="page active">
+                    <div class="dashboard-grid">
+                        <div class="main-stats">
+                            <div class="stat-card" onclick="showItemBreakdown()">
+                                <div class="stat-icon">👗</div>
+                                <div class="stat-number" id="totalItems">0</div>
+                                <div class="stat-label">Total Items</div>
+                            </div>
+                            <div class="stat-card" onclick="showValueBreakdown()">
+                                <div class="stat-icon">💰</div>
+                                <div class="stat-number" id="totalValue">Rp 0</div>
+                                <div class="stat-label">Total Value</div>
+                            </div>
+                            <div class="stat-card" onclick="showCostPerWearAnalysis()">
+                                <div class="stat-icon">📊</div>
+                                <div class="stat-number" id="avgCostPerWear">Rp 0</div>
+                                <div class="stat-label">Avg Cost/Wear</div>
+                            </div>
+                            <div class="stat-card" onclick="showSustainabilityTips()">
+                                <div class="stat-icon">♻️</div>
+                                <div class="stat-number" id="sustainabilityScore">0%</div>
+                                <div class="stat-label">Sustainability Score</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <h3>Quick Actions</h3>
+                            <button class="action-btn" onclick="openModal('cameraScanModal')">+ Scan Item Baru</button>
+                            <button class="action-btn" onclick="generateOutfit()">✨ Generate Outfit</button>
+                            <button class="action-btn" onclick="showPage('marketplace', event)">🛒 Browse Marketplace</button>
+                            <button class="action-btn" onclick="viewImpact()">📈 Lihat Impact Saya</button>
+                            <button class="action-btn" onclick="showTradePage()">🔄 Trade Items</button>
+                            <button class="action-btn" onclick="showDonationOptions()">❤️ Donasi Pakaian</button>
+                        </div>
+                    </div>
+                    
+                    <div id="recentActivity" class="recent-activity">
+                        <h3>Aktivitas Terbaru & Rekomendasi</h3>
+                        <div id="activityList">
+                            <div class="challenge-card">
+                                <h4>🔥 Items Sering Dipakai</h4>
+                                <div id="frequentItemsList"></div>
+                                <button class="btn-primary" onclick="showFrequentItemsDetail()" style="margin-top: 1rem;">Lihat Detail</button>
+                            </div>
+                            
+                            <div class="challenge-card">
+                                <h4>💡 Items Jarang Dipakai</h4>
+                                <div id="rareItemsList"></div>
+                                <button class="btn-primary" onclick="showRareItemsSuggestions()" style="margin-top: 1rem;">Styling Tips</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="wardrobe" class="page">
+                    <div class="wardrobe-container">
+                        <div class="wardrobe-sidebar">
+                            <div class="filter-section">
+                                <h4>Kategori</h4>
+                                <div class="filter-options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="all" checked onchange="filterItems()"> Semua
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="tops" onchange="filterItems()"> Atasan
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="bottoms" onchange="filterItems()"> Bawahan
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="dresses" onchange="filterItems()"> Dress
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="outerwear" onchange="filterItems()"> Outerwear
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-section">
+                                <h4>Warna</h4>
+                                <div class="filter-options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="black" onchange="filterItems()"> Hitam
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="white" onchange="filterItems()"> Putih
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="blue" onchange="filterItems()"> Biru
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="red" onchange="filterItems()"> Merah
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-section">
+                                <h4>Frequency</h4>
+                                <div class="filter-options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="frequent" onchange="filterItems()"> Sering (10+ kali)
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="moderate" onchange="filterItems()"> Jarang (1-10 kali)
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" value="never" onchange="filterItems()"> Belum Pernah
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-section">
+                                <h4>AI Recommendations</h4>
+                                <button class="btn-primary" onclick="showColorPalette()" style="width: 100%; margin: 0.5rem 0;">🎨 Color Palette</button>
+                                <button class="btn-primary" onclick="showWeatherRecommendations()" style="width: 100%; margin: 0.5rem 0;">🌤️ Weather Outfit</button>
+                                <button class="action-btn" onclick="generateOutfit()" style="width: 100%; margin: 0.5rem 0;">✨ Mix & Match</button>
+                            </div>
+                        </div>
+                        
+                        <div class="wardrobe-main">
+                            <div class="wardrobe-header">
+                                <h2>Lemari Digital Saya</h2>
+                                <button class="add-item-btn" onclick="openModal('cameraScanModal')">
+                                    + Scan Item Baru
+                                </button>
+                            </div>
+                            <div id="itemsGrid" class="items-grid">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div id="shopping" class="page">
+                    <div class="shopping-container">
+                        <div class="shopping-main">
+                            <h2>Mindful Shopping Assistant</h2>
+                            
+                            <div class="budget-tracker">
+                                <h3>Budget Bulanan & Spending Control</h3>
+                                <div class="budget-info">
+                                    <span>Terpakai: Rp <span id="spentAmount">0</span> / Rp <span id="budgetLimit">2000000</span></span>
+                                    <span id="budgetPercentage">0%</span>
+                                </div>
+                                <div class="budget-bar">
+                                    <div id="budgetFill" class="budget-fill" style="width: 0%"></div>
+                                </div>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">Daily purchases: <span id="dailyPurchases">0</span>/2 | Remaining budget: <span id="remainingBudget">Rp 2,000,000</span></p>
+                            </div>
+                            
+                            <div class="add-wishlist">
+                                <h3>30-Day Cooling Period Wishlist</h3>
+                                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                                    <input type="text" id="wishlistItem" class="form-input" placeholder="Nama item yang ingin dibeli" style="flex: 1;">
+                                    <input type="number" id="wishlistPrice" class="form-input" placeholder="Harga" style="width: 150px;">
+                                    <button class="btn-primary" onclick="addToWishlist()">Tambah</button>
+                                </div>
+                            </div>
+                            
+                            <div id="wishlistContainer">
+                                <h3>Wishlist Saya</h3>
+                                <div id="wishlistItems"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="shopping-sidebar">
+                            <h3>Smart Shopping Tips</h3>
+                            <div class="care-tips">
+                                <div>Tanya diri: "Apakah saya benar-benar butuh ini?"</div>
+                                <div>Cek apakah ada item serupa di lemari</div>
+                                <div>Pertimbangkan cost-per-wear</div>
+                                <div>Pilih brand berkelanjutan</div>
+                                <div>Wait 30 days untuk non-essential items</div>
+                                <div>Consider secondhand or rental options</div>
+                            </div>
+                            
+                            <div class="sustainability-checker" style="margin-top: 2rem; padding: 1.5rem; background: var(--cream); border-radius: 15px;">
+                                <h4>Brand Sustainability Checker</h4>
+                                <input type="text" id="brandChecker" class="form-input" placeholder="Nama brand" style="margin: 1rem 0;">
+                                <button class="btn-primary" onclick="checkBrandSustainability()">Cek Rating</button>
+                                <div id="brandResult" style="margin-top: 1rem;"></div>
+                            </div>
+                            
+                            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--light-green); border-radius: 15px; color: var(--forest-green);">
+                                <h4>🏆 Your Rewards</h4>
+                                <p>Trade Points: <strong id="tradePoints">150</strong></p>
+                                <p>Items Donated: <strong id="itemsDonated">8</strong></p>
+                                <p>Level: <strong id="userLevel">Gold Sustainer</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="marketplace" class="page">
+                    <div class="marketplace-header">
+                        <h2>Sustainable Marketplace</h2>
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="searchInput" placeholder="Cari item, brand, atau kategori..." onkeypress="handleSearchKeypress(event)">
+                            <button class="search-btn" onclick="searchProducts()">🔍</button>
+                        </div>
+                    </div>
+                    
+                    <div class="marketplace-filters">
+                        <button class="filter-chip active" onclick="filterProducts('all', event)">Semua</button>
+                        <button class="filter-chip" onclick="filterProducts('secondhand', event)">Secondhand</button>
+                        <button class="filter-chip" onclick="filterProducts('sustainable', event)">Brand Berkelanjutan</button>
+                        <button class="filter-chip" onclick="filterProducts('local', event)">Artisan Lokal</button>
+                        <button class="filter-chip" onclick="filterProducts('rental', event)">Rental</button>
+                    </div>
+                    
+                    <div id="productsGrid" class="products-grid">
+                        </div>
+                </div>
+                
+                <div id="tradePage" class="page">
+                    <h2 style="margin-bottom: 2rem;">🔄 ReWear Item Trading Hub</h2>
+                    <div id="tradeOffersList">
+                        </div>
+                    <p style="margin-top: 2rem; color: var(--text-light); text-align: center;">Item yang tersedia untuk Trade adalah item dengan *wear count* kurang dari 3.</p>
+                </div>
+
+
+                <div id="care" class="page">
+                    <h2>Fashion Care Hub</h2>
+                    
+                    <div class="care-sections">
+                        <div class="care-section">
+                            <h3>
+                                <div class="care-icon">🧺</div>
+                                Panduan Perawatan
+                            </h3>
+                            <div class="care-tips">
+                                <div>Pisahkan pakaian berdasarkan warna dan jenis kain</div>
+                                <div>Gunakan air dingin untuk warna gelap</div>
+                                <div>Jangan gunakan bleach untuk kain berwarna</div>
+                                <div>Jemur di tempat teduh untuk mencegah luntur</div>
+                                <div>Setrika pada suhu yang sesuai dengan jenis kain</div>
+                                <div>Simpan dengan hanger yang tepat</div>
+                                <div>Gunakan lavender bags untuk aroma alami</div>
+                            </div>
+                        </div>
+                        
+                        <div class="care-section">
+                            <h3>
+                                <div class="care-icon">🔧</div>
+                                Tutorial Reparasi
+                            </h3>
+                            <div class="tutorial-list">
+                                <button class="tutorial-btn" onclick="showTutorial('button')">🔘 Cara Jahit Kancing</button>
+                                <button class="tutorial-btn" onclick="showTutorial('hole')">🕳️ Menambal Lubang Kecil</button>
+                                <button class="tutorial-btn" onclick="showTutorial('zipper')">🤐 Memperbaiki Resleting</button>
+                                <button class="tutorial-btn" onclick="showTutorial('hem')">📏 Memendekkan Celana</button>
+                            </div>
+                        </div>
+                        
+                        <div class="care-section">
+                            <h3>
+                                <div class="care-icon">📍</div>
+                                Penjahit Terdekat
+                            </h3>
+                            <div id="tailorList" class="tailor-list">
+                                <div class="tailor-item" onclick="showTailorDetails('Jahit Ekspres Bu Sari')">
+                                    <h4>Jahit Ekspres Bu Sari</h4>
+                                    <p>📍 Tangerang Selatan - 2.3km</p>
+                                    <p>⭐ 4.8/5 (127 review)</p>
+                                    <p>💰 Rp 15.000 - 50.000</p>
+                                </div>
+                                <div class="tailor-item" onclick="showTailorDetails('Taylor House Premium')">
+                                    <h4>Taylor House Premium</h4>
+                                    <p>📍 Bintaro - 3.1km</p>
+                                    <p>⭐ 4.9/5 (89 review)</p>
+                                    <p>💰 Rp 25.000 - 100.000</p>
+                                </div>
+                                <div class="tailor-item" onclick="showTailorDetails('Alterasi Cepat Pak Budi')">
+                                    <h4>Alterasi Cepat Pak Budi</h4>
+                                    <p>📍 Tangerang Kota - 1.8km</p>
+                                    <p>⭐ 4.7/5 (203 review)</p>
+                                    <p>💰 Rp 10.000 - 40.000</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="care-section">
+                            <h3>
+                                <div class="care-icon">♻️</div>
+                                Upcycling Ideas
+                            </h3>
+                            <div class="upcycling-ideas">
+                                <button class="upcycling-btn" onclick="showUpcyclingSelection()">🔄 Mulai Upcycling</button>
+                                <button class="upcycling-btn" onclick="showTutorial('upcycling-idea')">💡 Lihat Ide Tutorial</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="community" class="page">
+                    <h2>Komunitas & Dampak</h2>
+                    
+                    <div class="community-tabs">
+                        <button class="community-tab active" onclick="showCommunityTab('challenges', event)">Challenges</button>
+                        <button class="community-tab" onclick="showCommunityTab('impact', event)">My Impact</button>
+                        <button class="community-tab" onclick="showCommunityTab('events', event)">Events</button>
+                        <button class="community-tab" onclick="showCommunityTab('education', event)">Edukasi</button>
+                    </div>
+                    
+                    <div id="challengesTab" class="community-content active">
+                        <div class="challenge-card">
+                            <div class="challenge-header">
+                                <h3 class="challenge-title">🎯 30-Day No-Buy Challenge</h3>
+                                <span class="challenge-status">Aktif</span>
+                            </div>
+                            <p>Tantang diri untuk tidak membeli pakaian baru selama 30 hari. Fokus gunakan yang sudah ada!</p>
+                            <div style="margin-top: 1rem;">
+                                <div>Progress: <span id="noBuyProgress">0</span>/30 hari</div>
+                                <div class="budget-bar" style="margin: 0.5rem 0;">
+                                    <div class="budget-fill" style="width: 0%"></div>
+                                </div>
+                                <button class="btn-primary" onclick="updateNoBuyChallenge()" style="margin-top: 1rem;">Update Progress (Harian)</button>
+                            </div>
+                        </div>
+                        
+                        <div class="challenge-card">
+                            <div class="challenge-header">
+                                <h3 class="challenge-title">✨ Weekly Style Challenge</h3>
+                                <span class="challenge-status">Baru</span>
+                            </div>
+                            <p>Tema minggu ini: "Monochrome Magic" - Ciptakan outfit keren dengan 1-2 warna saja!</p>
+                            <button class="btn-primary" style="margin-top: 1rem;" onclick="joinChallenge()">Join Challenge</button>
+                        </div>
+                        
+                        <div class="challenge-card">
+                            <div class="challenge-header">
+                                <h3 class="challenge-title">🔄 Monthly Trade Challenge</h3>
+                                <span class="challenge-status">Tersedia</span>
+                            </div>
+                            <p>Trade minimal 3 items bulan ini untuk mendapat exclusive badge dan bonus trade points!</p>
+                            <div style="margin-top: 1rem;">
+                                <div>Progress: 1/3 items traded</div>
+                                <button class="btn-primary" onclick="showTradePage()">Start Trading</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="impactTab" class="community-content">
+                        <div class="impact-dashboard">
+                            <h3>Environmental Impact Saya</h3>
+                            <div class="impact-stats">
+                                <div class="impact-stat">
+                                    <div class="impact-number">2.5</div>
+                                    <div>Ton CO2 Saved</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-number">1,250</div>
+                                    <div>Liter Air Saved</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-number">15</div>
+                                    <div>Items Donated</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-number">Rp 3.2M</div>
+                                    <div>Money Saved</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="challenge-card">
+                            <h3>📈 Sustainability Achievements</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <div style="font-size: 2rem;">🏆</div>
+                                    <h4>Gold Sustainer</h4>
+                                    <p>150+ trade points</p>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <div style="font-size: 2rem;">💚</div>
+                                    <h4>Generous Donor</h4>
+                                    <p>8 items donated</p>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <div style="font-size: 2rem;">🎨</div>
+                                    <h4>Creative Upcycler</h4>
+                                    <p>3 upcycling projects</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="eventsTab" class="community-content">
+                        <div class="challenge-card">
+                            <h3>🔄 Clothing Swap Jakarta</h3>
+                            <p>📅 Sabtu, 15 Feb 2025 - 14:00-17:00</p>
+                            <p>📍 Plaza Senayan, Jakarta</p>
+                            <p>Tukar pakaian dengan member lain! Bawa 5 item, pulang dengan 5 item baru.</p>
+                            <button class="btn-primary" onclick="joinEvent()">Daftar Sekarang</button>
+                        </div>
+                        
+                        <div class="challenge-card">
+                            <h3>🎓 Workshop: Sustainable Fashion</h3>
+                            <p>📅 Minggu, 23 Feb 2025 - 10:00-12:00</p>
+                            <p>📍 Online via Zoom</p>
+                            <p>Pelajari cara memilih fashion berkelanjutan dan merawat pakaian.</p>
+                            <button class="btn-primary" onclick="joinWorkshop()">Join Workshop</button>
+                        </div>
+                        
+                        <div class="challenge-card">
+                            <h3>🧵 Upcycling Workshop</h3>
+                            <p>📅 Sabtu, 1 Mar 2025 - 09:00-15:00</p>
+                            <p>📍 Creative Space, Kemang</p>
+                            <p>Hands-on workshop mengubah pakaian lama menjadi item baru yang stylish!</p>
+                            <button class="btn-primary" onclick="joinUpcyclingWorkshop()">Daftar Workshop</button>
+                        </div>
+                    </div>
+                    
+                    <div id="educationTab" class="community-content">
+                        <div class="challenge-card">
+                            <h3>📚 Sustainable Fashion 101</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <h4>🌱 Eco-Friendly Materials</h4>
+                                    <p>Pelajari bahan-bahan ramah lingkungan dan cara mengidentifikasinya.</p>
+                                    <button class="btn-primary" onclick="showEducationContent('materials')">Learn More</button>
+                                </div>
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <h4>💧 Water Conservation</h4>
+                                    <p>Dampak industri fashion terhadap air dan cara menguranginya.</p>
+                                    <button class="btn-primary" onclick="showEducationContent('water')">Learn More</button>
+                                </div>
+                                <div style="padding: 1rem; background: var(--cream); border-radius: 12px;">
+                                    <h4>🔄 Circular Economy</h4>
+                                    <p>Konsep ekonomi sirkular dalam industri fashion.</p>
+                                    <button class="btn-primary" onclick="showEducationContent('circular')">Learn More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="profilePage" class="page">
+    <div class="wardrobe-container" style="grid-template-columns: 1fr;">
+        <div class="wardrobe-main" style="max-width: 600px; margin: 0 auto;">
+            <h2 style="margin-bottom: 2rem;">⚙️ Edit Profil & Pengaturan Akun</h2>
+
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 1rem;">D</div>
+                <h3 id="profileUserName" style="color: var(--forest-green);">Diajeng (Gold Sustainer)</h3>
+                <p id="profileUserEmail" style="color: var(--text-light);">user@rewear.app</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Poin Trade: <strong id="profileTradePoints">150</strong> | Level: <strong id="profileUserLevel">Gold Sustainer</strong></p>
+            </div>
+
+            <div class="form-group">
+                <label for="editName" class="form-label">Nama Lengkap</label>
+                <input type="text" id="editName" class="form-input" placeholder="Nama Anda">
+            </div>
+
+            <div class="form-group">
+                <label for="editEmail" class="form-label">Email</label>
+                <input type="email" id="editEmail" class="form-input" placeholder="Email Anda">
+            </div>
+
+            <div class="form-group">
+                <label for="editLocation" class="form-label">Lokasi (untuk layanan terdekat)</label>
+                <input type="text" id="editLocation" class="form-input" placeholder="Misal: Jakarta Selatan">
+            </div>
+
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--forest-green);">Pengaturan Budget</h3>
+            <div class="form-group">
+                <label for="editBudget" class="form-label">Batas Budget Belanja Bulanan (Rp)</label>
+                <input type="number" id="editBudget" class="form-input" placeholder="Misal: 2000000">
+            </div>
+
+            <button class="btn-primary" onclick="saveProfileChanges()" style="width: 100%; margin-top: 1.5rem;">Simpan Perubahan Profil</button>
+        </div>
+    </div>
+</div>
+        </main>
+    </div>
+
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('addItemModal')">&times;</button>
+            <h2>Tambah Item Manual</h2>
+            <div class="form-group">
+                <label class="form-label">Nama Item</label>
+                <input type="text" id="itemName" class="form-input" placeholder="e.g., Blouse Putih H&M">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Kategori</label>
+                <select id="itemCategory" class="form-select">
+                    <option value="tops">Atasan</option>
+                    <option value="bottoms">Bawahan</option>
+                    <option value="dresses">Dress</option>
+                    <option value="outerwear">Outerwear</option>
+                    <option value="accessories">Aksesoris</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Warna Utama</label>
+                <select id="itemColor" class="form-select">
+                    <option value="black">Hitam</option>
+                    <option value="white">Putih</option>
+                    <option value="blue">Biru</option>
+                    <option value="red">Merah</option>
+                    <option value="green">Hijau</option>
+                    <option value="yellow">Kuning</option>
+                    <option value="pink">Pink</option>
+                    <option value="gray">Abu-abu</option>
+                    <option value="brown">Coklat</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Harga Beli</label>
+                <input type="number" id="itemPrice" class="form-input" placeholder="e.g., 150000">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Brand</label>
+                <input type="text" id="itemBrand" class="form-input" placeholder="e.g., H&M, Zara, Local Brand">
+            </div>
+            <button class="btn-primary" onclick="addNewItem()">Tambah ke Lemari</button>
+        </div>
+    </div>
+    
+    <div id="cameraScanModal" class="modal">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('cameraScanModal')">&times;</button>
+            <h2 style="color: var(--forest-green);">📸 Scan Item Baru</h2>
+            <div style="height: 300px; background: #333; border-radius: 20px; margin: 1.5rem 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; border: 4px solid var(--primary-green);" id="cameraView">
+                <span class="loading" style="opacity: 1; pointer-events: auto;">Scanning...</span>
+            </div>
+            <p>Arahkan kamera ke pakaian Anda. AI akan mengidentifikasi detailnya.</p>
+            <button class="btn-primary" onclick="startScan()">Mulai Scanning</button>
+            <button class="btn-primary" style="background: #6c757d; margin-top: 0.5rem;" onclick="closeModal('cameraScanModal'); openModal('addItemModal')">Input Manual</button>
+        </div>
+    </div>
+    
+    <div id="paymentModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
+            <h2 style="color: #667eea;">💳 Pembayaran Aman</h2>
+            <p style="margin: 1rem 0;">Anda akan diarahkan ke halaman pembayaran yang aman.</p>
+            
+            <div style="background: #f0f8ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid #cceeff;">
+                <p>Total Pembelian: <strong id="paymentAmount">Rp 0</strong></p>
+                <p>Item: <strong id="paymentItemName">-</strong></p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                <button class="btn-primary" style="background: #1cb0f6;" onclick="completePayment('Midtrans')">Bayar via Midtrans</button>
+                <button class="btn-primary" style="background: #00a54f;" onclick="completePayment('GoPay')">Bayar via GoPay</button>
+                <button class="btn-primary" style="background: #6610f2;" onclick="completePayment('OVO')">Bayar via OVO</button>
+            </div>
+            
+            <button class="btn-primary" style="background: #dc3545; font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="closeModal('paymentModal')">Batalkan Pembelian</button>
+        </div>
+    </div>
+
+    <div id="tradeDetailModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('tradeDetailModal')">&times;</button>
+            <h2 style="color: var(--forest-green);">🤝 Detail Penukaran</h2>
+            
+            <div id="tradeItemInfo" style="margin-bottom: 1.5rem;"></div>
+
+            <h3 style="margin-top: 1.5rem; color: var(--forest-green);">Barang yang Ingin Anda Tukar:</h3>
+            <select id="userTradeItemSelect" class="form-select" style="margin-bottom: 1rem;"></select>
+            
+            <div style="background: #fff3cd; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                <p><strong>Status Persetujuan:</strong></p>
+                <p>Anda: <strong id="userTradeStatus" style="color: #dc3545;">Belum Setuju</strong></p>
+                <p>Penukar: <strong id="partnerTradeStatus" style="color: #dc3545;">Menunggu</strong></p>
+            </div>
+            
+            <button id="agreeTradeBtn" class="btn-primary" onclick="agreeToTrade()" style="width: 100%; margin-bottom: 1rem;">✅ Setujui Penukaran</button>
+            <button class="btn-primary" style="background: #6c757d; width: 100%;" onclick="closeModal('tradeDetailModal')">Batalkan</button>
+        </div>
+    </div>
+    
+    <div id="donationSelectionModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('donationSelectionModal')">&times;</button>
+            <h2 style="color: var(--forest-green);">❤️ Pilih Item Donasi</h2>
+            <p style="margin-bottom: 1.5rem;">Pilih item yang ingin Anda donasikan, terutama yang jarang dipakai (Wear Count < 3).</p>
+            
+            <div id="donatableItemsList" style="max-height: 250px; overflow-y: auto; padding-right: 10px;">
+                </div>
+            
+            <div class="form-group" style="margin-top: 2rem;">
+                <label class="form-label">Pilih Tujuan Donasi</label>
+                <select id="donationTargetSelect" class="form-select">
+                    <option value="yayasan">Yayasan Peduli Anak (Jakarta Selatan)</option>
+                    <option value="panti">Panti Asuhan Kasih Ibu (Tangerang)</option>
+                    <option value="individu_lily">Anak Lily (individu, membutuhkan pakaian hangat)</option>
+                </select>
+            </div>
+            
+            <button class="btn-primary" onclick="confirmDonation()" style="width: 100%;">Konfirmasi Donasi</button>
+        </div>
+    </div>
+    
+    <div id="upcyclingSelectionModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('upcyclingSelectionModal')">&times;</button>
+            <h2 style="color: var(--forest-green);">♻️ Pilih Item Upcycling</h2>
+            <p style="margin-bottom: 1.5rem;">Pilih item yang ingin Anda ubah/daur ulang.</p>
+            
+            <select id="upcycleItemSelect" class="form-select" style="margin-bottom: 1.5rem;">
+                </select>
+            
+            <button class="btn-primary" onclick="startUpcyclingProcess()" style="width: 100%;">Mulai Analisis Upcycling</button>
+        </div>
+    </div>
+    
+    <div id="upcyclingLoadingModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('upcyclingLoadingModal')">&times;</button>
+            <div id="upcyclingProcessContent">
+                </div>
+        </div>
+    </div>
+
+
+  <script>
+    // --- Data Storage (In-memory) ---
+    let wardrobeItems = [
+        { id: 1, name: "Blouse Putih Basic", category: "tops", color: "white", price: 150000, brand: "Uniqlo", wearCount: 12, lastWorn: "2025-01-15", emoji: "👕" },
+        { id: 2, name: "Jeans Skinny Dark", category: "bottoms", color: "blue", price: 250000, brand: "Levi's", wearCount: 8, lastWorn: "2025-01-10", emoji: "👖" },
+        { id: 3, name: "Dress Floral Summer", category: "dresses", color: "pink", price: 300000, brand: "Zara", wearCount: 3, lastWorn: "2024-12-20", emoji: "👗" },
+        { id: 4, name: "Blazer Hitam Formal", category: "outerwear", color: "black", price: 450000, brand: "The Executive", wearCount: 15, lastWorn: "2025-01-20", emoji: "👔" },
+        { id: 5, name: "Kemeja Denim Kasual", category: "tops", color: "blue", price: 200000, brand: "Gap", wearCount: 2, lastWorn: "2024-12-15", emoji: "👕" },
+        { id: 6, name: "Celana Chino Beige", category: "bottoms", color: "brown", price: 180000, brand: "H&M", wearCount: 1, lastWorn: "2024-11-01", emoji: "👖" },
+        { id: 7, name: "T-Shirt Lusuh", category: "tops", color: "red", price: 50000, brand: "Local Brand", wearCount: 0, lastWorn: null, emoji: "👕" },
+        { id: 8, name: "Rok Mini Biru", category: "bottoms", color: "blue", price: 120000, brand: "Zara", wearCount: 1, lastWorn: "2024-10-01", emoji: "👖" }
+    ];
+
+    let wishlistItems = [];
+    let monthlyBudget = 2000000;
+    let spentThisMonth = 450000;
+    let spendingLimit = 1500000;
+    let dailyPurchaseCount = 0;
+    let dailyPurchaseLimit = 2;
+    let weatherData = { temp: 28, condition: 'Cerah', humidity: 70 };
+    let userRewards = { tradePoints: 150, donations: 8, sustainabilityLevel: 'Gold' };
+    let noBuyProgressDays = 12; // Challenge progress
+
+    // Marketplace Products: RESTORED DATA
+    const marketplaceProducts = [
+        { id: 1, name: "Vintage Denim Jacket", price: 180000, category: "secondhand", sustainability: "Pre-loved", emoji: "🧥", seller: "Thrift Corner", details: "Kondisi sangat baik, model klasik tahun 90-an." },
+        { id: 2, name: "Organic Cotton T-Shirt", price: 120000, category: "sustainable", sustainability: "GOTS Certified", emoji: "👕", seller: "EcoFashion", details: "Bahan katun organik bersertifikat, ramah lingkungan." },
+        { id: 3, name: "Handwoven Batik Dress", price: 350000, category: "local", sustainability: "Local Artisan", emoji: "👗", seller: "Batik Nusantara", details: "Dibuat dengan tangan oleh pengrajin lokal, mendukung ekonomi UMKM." },
+        { id: 4, name: "Designer Evening Gown", price: 50000, category: "rental", sustainability: "Rental - 3 days", emoji: "👰", seller: "Dress Rental Co", details: "Gaun desainer untuk acara spesial. Harga adalah biaya sewa 3 hari." },
+        { id: 5, name: "Sustainable Sneakers", price: 280000, category: "sustainable", sustainability: "Recycled Materials", emoji: "👟", seller: "Green Steps", details: "Sepatu dibuat dari 60% plastik daur ulang." }
+    ];
+    
+    // Trade Offers Data
+    const tradeOffersData = [
+        { id: 1, offerItem: { id: 101, name: "T-Shirt Grafis", emoji: "👕", category: "tops", color: "red" }, userItem: 5, partnerName: "Maya (Silver Supporter)", partnerStatus: 'pending', userStatus: 'pending' },
+        { id: 2, offerItem: { id: 102, name: "Scarf Sutra", emoji: "🧣", category: "accessories", color: "pink" }, userItem: 6, partnerName: "Rina (Gold Sustainer)", partnerStatus: 'accepted', userStatus: 'pending' }
+    ];
+    
+    let currentTradeOffer = null;
+
+    // --- Utility Functions ---
+    function formatPrice(amount) { return 'Rp ' + Math.round(amount).toLocaleString('id-ID'); }
+    function getCategoryEmoji(category) {
+        const emojis = { 'tops': '👕', 'bottoms': '👖', 'dresses': '👗', 'outerwear': '🧥', 'accessories': '👜' };
+        return emojis[category] || '👔';
+    }
+    function showNotification(message, type = 'success', duration = 3000) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `<div style="display: flex; align-items: center; gap: 0.8rem;"><span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'info' ? '💡' : '❌'}</span><span>${message}</span><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;margin-left:auto;">×</button></div>`;
+        document.body.appendChild(notification);
+        setTimeout(() => { notification.classList.add('show'); }, 100);
+        setTimeout(() => { if (notification.parentElement) { notification.classList.remove('show'); setTimeout(() => { if (notification.parentElement) { document.body.removeChild(notification); } }, 300); } }, duration);
+    }
+    function showSweetAlert(title, content, type = 'info') {
+        const alertModal = document.createElement('div');
+        alertModal.className = 'modal active';
+        alertModal.style.zIndex = '2500';
+        alertModal.innerHTML = `<div class="modal-content" style="max-width: 500px; text-align: center;"><button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button><div style="font-size: 3rem; margin-bottom: 1rem;">${type === 'success' ? '🎉' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : '💡'}</div><h2 style="color: var(--forest-green); margin-bottom: 1rem;">${title}</h2><div style="margin-bottom: 2rem;">${content}</div></div>`;
+        document.body.appendChild(alertModal);
+    }
+    function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+    function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+    function showPage(pageId, event) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        if (event && event.target) { event.target.classList.add('active'); } else { const targetButton = document.querySelector(`.nav-tab[onclick*="showPage('${pageId}'"]`); if(targetButton) targetButton.classList.add('active'); }
+        if (pageId === 'dashboard') loadDashboard();
+        if (pageId === 'wardrobe') loadWardrobe();
+        if (pageId === 'shopping') loadShopping();
+        if (pageId === 'marketplace') loadMarketplace();
+        if (pageId === 'community') showCommunityTab('challenges');
+        if (pageId === 'tradePage') loadTradePage();
+    }
+    
+    // --- Dashboard & Status Loading ---
+    function getFrequentlyWornItems() {
+        return wardrobeItems.filter(item => item.wearCount > 5).sort((a, b) => b.wearCount - a.wearCount).slice(0, 5);
+    }
+
+    function getRarelyWornItems() {
+        return wardrobeItems.filter(item => item.wearCount < 3).sort((a, b) => a.wearCount - b.wearCount);
+    }
+    
+    function calculateSustainabilityScore() {
+        if (wardrobeItems.length === 0) return 0;
+        let score = 0;
+        wardrobeItems.forEach(item => {
+            const costPerWear = item.wearCount > 0 ? item.price / item.wearCount : item.price;
+            if (costPerWear < 50000) score += 25;
+            else if (costPerWear < 100000) score += 20;
+            else if (costPerWear < 200000) score += 15;
+            else score += 5;
+            if (item.wearCount > 10) score += 5;
+        });
+        return Math.min(100, Math.round(score / wardrobeItems.length));
+    }
+
+    function loadDashboard() {
+        const totalItems = wardrobeItems.length;
+        const totalValue = wardrobeItems.reduce((sum, item) => sum + item.price, 0);
+        const totalWears = wardrobeItems.reduce((sum, item) => sum + item.wearCount, 0);
+        const avgCostPerWear = totalWears > 0 ? totalValue / totalWears : 0;
+        const sustainabilityScore = calculateSustainabilityScore();
+
+        document.getElementById('totalItems').textContent = totalItems;
+        document.getElementById('totalValue').textContent = formatPrice(totalValue);
+        document.getElementById('avgCostPerWear').textContent = formatPrice(avgCostPerWear);
+        document.getElementById('sustainabilityScore').textContent = sustainabilityScore + '%';
+        
+        document.getElementById('noBuyProgress').textContent = noBuyProgressDays;
+        const budgetFillEl = document.querySelector('#challengesTab .budget-fill');
+        if (budgetFillEl) budgetFillEl.style.width = (noBuyProgressDays / 30) * 100 + '%';
+
+        updateFrequentItemsList();
+        updateRareItemsList();
+        updateRewardsDisplay();
+        updateImpactStats();
+    }
+
+    function updateFrequentItemsList() {
+        const frequentItems = getFrequentlyWornItems();
+        const container = document.getElementById('frequentItemsList');
+        
+        container.innerHTML = frequentItems.length > 0 ? 
+            frequentItems.map(item => 
+                `<div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--cream);">
+                    <span>${item.emoji} ${item.name}</span>
+                    <span class="wear-count">${item.wearCount}x</span>
+                </div>`
+            ).join('') : 
+            '<p style="color: var(--text-light); font-style: italic;">Belum ada item yang sering dipakai</p>';
+    }
+
+    function updateRareItemsList() {
+        const rareItems = getRarelyWornItems();
+        const container = document.getElementById('rareItemsList');
+        
+        container.innerHTML = rareItems.length > 0 ? 
+            rareItems.slice(0, 3).map(item => 
+                `<div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--cream);">
+                    <span>${item.emoji} ${item.name}</span>
+                    <span style="color: var(--text-light); font-size: 0.8rem;">${item.wearCount}x</span>
+                </div>`
+            ).join('') : 
+            '<p style="color: var(--text-light); font-style: italic;">Semua item sudah sering dipakai!</p>';
+    }
+    // --- R-11: Fungsi Edit Profil ---
+
+let userData = {
+    name: "Diajeng",
+    email: "user@rewear.app",
+    location: "Tangerang Selatan"
+};
+
+function showProfilePage() {
+    // Memuat data yang ada ke form saat masuk halaman
+    document.getElementById('editName').value = userData.name;
+    document.getElementById('editEmail').value = userData.email;
+    document.getElementById('editLocation').value = userData.location;
+    document.getElementById('editBudget').value = monthlyBudget;
+    
+    // Memperbarui tampilan statistik di halaman profil
+    document.getElementById('profileUserName').textContent = `${userData.name} (${userRewards.sustainabilityLevel})`;
+    document.getElementById('profileUserEmail').textContent = userData.email;
+    document.getElementById('profileTradePoints').textContent = userRewards.tradePoints;
+    document.getElementById('profileUserLevel').textContent = userRewards.sustainabilityLevel;
+
+    // Mengalihkan ke halaman profile
+    showPage('profilePage', { target: document.querySelector('.profile-avatar') });
+}
+
+function saveProfileChanges() {
+    const newName = document.getElementById('editName').value.trim();
+    const newEmail = document.getElementById('editEmail').value.trim();
+    const newLocation = document.getElementById('editLocation').value.trim();
+    const newBudget = parseInt(document.getElementById('editBudget').value);
+    
+    // Update data
+    userData.name = newName;
+    userData.email = newEmail;
+    userData.location = newLocation;
+    monthlyBudget = newBudget || monthlyBudget; // Update budget
+
+    // Update tampilan
+    document.querySelector('.profile-avatar').textContent = newName.charAt(0);
+    showNotification('Perubahan profil berhasil disimpan!', 'success');
+    
+    // Kembali ke dashboard setelah simpan
+    loadDashboard();
+    showPage('dashboard'); 
+}
+    // --- R-1: Item Detail dengan Simulasi Gambar ---
+    function showFrequentItemsDetail() {
+        const frequentItems = getFrequentlyWornItems();
+        
+        showSweetAlert(
+            '🔥 Detail Item Paling Sering Dipakai (MVP)',
+            `
+                <div style="text-align: left;">
+                    <p>Item ini terbukti memberikan **nilai Cost-Per-Wear (CPW) terbaik** bagi Anda.</p>
+                    
+                    ${frequentItems.map(item => `
+                        <div style="background: var(--cream); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <h4 style="color: var(--forest-green);">${item.emoji} ${item.name}</h4>
+                            <div class="image-placeholder">${item.emoji} Simulasi Gambar Item</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0; font-size: 0.9rem;">
+                                <span>Dipakai: <strong>${item.wearCount}x</strong></span>
+                                <span>CPW: <strong>${formatPrice(item.price / item.wearCount)}</strong></span>
+                                <span>Brand: ${item.brand}</span>
+                                <span>Kategori: ${item.category}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                    
+                </div>
+            `,
+            'success'
+        );
+    }
+    
+    // --- R-8: Mengembalikan Color Palette & Weather ---
+    function getColorPaletteRecommendation(baseColor) {
+        const colorPalettes = {
+            'black': ['white', 'gray', 'red', 'gold', 'silver'],
+            'white': ['black', 'blue', 'pink', 'green', 'navy'],
+            'blue': ['white', 'yellow', 'brown', 'gray', 'cream'],
+            'red': ['black', 'white', 'gold', 'navy', 'gray'],
+            'green': ['brown', 'cream', 'white', 'gold', 'beige'],
+            'pink': ['white', 'gray', 'black', 'gold', 'navy'],
+            'yellow': ['blue', 'white', 'brown', 'black', 'gray'],
+            'gray': ['white', 'black', 'pink', 'blue', 'yellow'],
+            'brown': ['cream', 'white', 'green', 'gold', 'orange']
+        };
+        
+        return colorPalettes[baseColor] || ['white', 'black', 'gray'];
+    }
+
+    function showColorPalette() {
+        const allColors = wardrobeItems.map(item => item.color);
+        if (allColors.length === 0) {
+             showNotification('Tambahkan item untuk rekomendasi warna!', 'warning');
+             return;
+        }
+        const uniqueColors = [...new Set(allColors)];
+        const selectedColor = uniqueColors[Math.floor(Math.random() * uniqueColors.length)];
+        const palette = getColorPaletteRecommendation(selectedColor);
+        
+        const paletteHtml = `
+            <div style="text-align: center; padding: 0.5rem;">
+                <h3>Color Palette untuk ${selectedColor.toUpperCase()}</h3>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap;">
+                    ${palette.map(color => 
+                        `<div style="width: 50px; height: 50px; background: ${color}; border: 2px solid #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: ${['white', 'yellow', 'cream'].includes(color) ? 'black' : 'white'}; font-weight: bold; font-size: 0.8rem;">${color.charAt(0).toUpperCase()}</div>`
+                    ).join('')}
+                </div>
+                <p>Warna yang cocok dipadu dengan ${selectedColor}: <strong>${palette.join(', ')}</strong></p>
+            </div>
+        `;
+        
+        showSweetAlert('🎨 AI Color Palette', paletteHtml);
+    }
+    
+    function getWeatherRecommendations() {
+        const { temp, condition } = weatherData;
+        let recommendations = [];
+        
+        if (temp > 30) {
+            recommendations.push("Pilih bahan katun atau linen yang menyerap keringat");
+        } else if (temp < 20) {
+            recommendations.push("Layer dengan cardigan atau jaket");
+        } else {
+            recommendations.push("Cuaca sempurna untuk mix and match apa pun!");
+        }
+        
+        if (condition === 'Hujan') {
+            recommendations.push("Jangan lupa jaket anti air dan pilih sepatu waterproof!");
+        } else {
+            recommendations.push(`Cuaca ${condition.toUpperCase()} sangat mendukung gaya Anda!`);
+        }
+        
+        return recommendations.length > 0 ? recommendations : ["Rekomendasi umum: pakai apa yang membuat Anda bahagia hari ini!"];
+    }
+
+    function showWeatherRecommendations() {
+        const recommendations = getWeatherRecommendations();
+        
+        showSweetAlert(
+            '🌤️ Rekomendasi Outfit Berdasarkan Cuaca',
+            `
+                <div style="text-align: left;">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌤️</div>
+                        <p><strong>Cuaca Hari Ini:</strong> ${weatherData.temp}°C, ${weatherData.condition.toUpperCase()}</p>
+                    </div>
+                    
+                    <h4>Tips Outfit:</h4>
+                    <ul style="margin: 1rem 0;">
+                        ${recommendations.map(rec => `<li style="margin: 0.5rem 0;">${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `,
+            'info'
+        );
+    }
+
+    // --- R-7: Upcycling dengan Wrap Effect ---
+    function showUpcyclingSelection() {
+        const upcycleableItems = wardrobeItems.filter(item => ['tops', 'bottoms', 'dresses'].includes(item.category));
+        
+        if (upcycleableItems.length === 0) {
+             showNotification('Tidak ada item yang cocok untuk upcycling (butuh Atasan, Bawahan, atau Dress).', 'warning');
+             return;
+        }
+        
+        const select = document.getElementById('upcycleItemSelect');
+        select.innerHTML = upcycleableItems.map(item => 
+            `<option value="${item.id}">${item.emoji} ${item.name} (Worn ${item.wearCount}x)</option>`
+        ).join('');
+        
+        openModal('upcyclingSelectionModal');
+    }
+    
+    function startUpcyclingProcess() {
+        const itemId = parseInt(document.getElementById('upcycleItemSelect').value);
+        const item = wardrobeItems.find(i => i.id === itemId);
+        if (!item) return;
+
+        closeModal('upcyclingSelectionModal');
+        
+        const loadingContent = document.getElementById('upcyclingProcessContent');
+        loadingContent.innerHTML = `
+            <div class="wrap-loading">
+                <div class="wrap-item">${item.emoji}</div>
+                <h3 style="margin-top: 2rem; color: var(--forest-green);">Menganalisis: ${item.name}</h3>
+                <p>Mencari ide terbaik untuk daur ulang...</p>
+            </div>
+        `;
+        openModal('upcyclingLoadingModal');
+
+        setTimeout(() => {
+            wardrobeItems = wardrobeItems.filter(i => i.id !== itemId);
+            userRewards.tradePoints += 15;
+            
+            let resultName = '';
+            let resultEmoji = '';
+            if (item.category === 'bottoms' && item.name.includes('Jeans')) {
+                resultName = 'Tas Tote & Pouch Kecil';
+                resultEmoji = '👜';
+            } else if (item.category === 'tops' || item.name.includes('Kemeja')) {
+                resultName = 'Scrunchie Set atau Kain Lap';
+                resultEmoji = '✂️';
+            } else if (item.category === 'dresses') {
+                resultName = 'Rok Mini Musim Panas & Syal';
+                resultEmoji = '👗';
+            } else {
+                resultName = 'Kain Lap Serbaguna & Bandana';
+                resultEmoji = '🧻';
+            }
+
+            loadingContent.innerHTML = `
+                <div style="padding: 1rem;">
+                    <h3 style="color: var(--primary-green); margin-bottom: 1rem;">🎉 Ide Upcycling Selesai!</h3>
+                    <div style="font-size: 4rem; margin: 1rem 0;">${item.emoji} → ${resultEmoji}</div>
+                    <h4>**${item.name}** diubah menjadi: **${resultName}**!</h4>
+                    <p style="margin-top: 1rem;">Anda berhasil mengurangi sampah tekstil. **+15 Trade Points!**</p>
+                    <button class="btn-primary" onclick="closeModal('upcyclingLoadingModal'); loadDashboard()" style="margin-top: 1.5rem;">Selesai</button>
+                </div>
+            `;
+            
+        }, 3000);
+    }
+
+    // --- R-2: Tambah Item Baru dengan Scanner (Simulasi) ---
+    function startScan() {
+        const cameraView = document.getElementById('cameraView');
+        cameraView.innerHTML = `<span class="loading" style="opacity: 1; pointer-events: auto;">Scanning Item...</span>`;
+        
+        setTimeout(() => { cameraView.innerHTML = `✅ Ditemukan!`; }, 1500);
+
+        setTimeout(() => {
+            closeModal('cameraScanModal');
+            const scannedData = {
+                name: 'Jaket Bomber Hijau',
+                category: 'outerwear',
+                color: 'green',
+                price: 350000,
+                brand: 'Local Project'
+            };
+            
+            document.getElementById('itemName').value = scannedData.name;
+            document.getElementById('itemCategory').value = scannedData.category;
+            document.getElementById('itemColor').value = scannedData.color;
+            document.getElementById('itemPrice').value = scannedData.price;
+            document.getElementById('itemBrand').value = scannedData.brand;
+            
+            showNotification('Item berhasil diidentifikasi! Harap konfirmasi detailnya.', 'info', 4000);
+            openModal('addItemModal');
+            
+            cameraView.innerHTML = `<span class="loading" style="opacity: 1; pointer-events: auto;">Scanning...</span>`;
+        }, 3000); 
+    }
+    
+    function addNewItem() {
+        const itemName = document.getElementById('itemName').value.trim();
+        const itemCategory = document.getElementById('itemCategory').value;
+        const itemColor = document.getElementById('itemColor').value;
+        const itemPrice = parseInt(document.getElementById('itemPrice').value);
+        const itemBrand = document.getElementById('itemBrand').value.trim() || 'Unknown';
+        
+        if (!itemName || !itemPrice || itemPrice <= 0) {
+            showNotification('Harap isi Nama Item dan Harga Beli yang valid!', 'error');
+            return;
+        }
+        
+        const newItem = {
+            id: Date.now(),
+            name: itemName,
+            category: itemCategory,
+            color: itemColor,
+            price: itemPrice,
+            brand: itemBrand,
+            wearCount: 0,
+            lastWorn: null,
+            emoji: getCategoryEmoji(itemCategory)
+        };
+        
+        wardrobeItems.push(newItem);
+        closeModal('addItemModal');
+        
+        document.getElementById('itemName').value = '';
+        document.getElementById('itemPrice').value = '';
+        document.getElementById('itemBrand').value = '';
+        
+        showNotification(`${newItem.name} berhasil ditambahkan!`, 'success');
+        loadDashboard();
+        if (document.getElementById('wardrobe').classList.contains('active')) {
+            renderWardrobe();
+        }
+    }
+    function loadWardrobe() {
+    renderWardrobe(wardrobeItems);
+}
+
+function getCategoryColor(category) {
+    const colors = { 'tops': '#a8cc8a', 'bottoms': '#7ba05b', 'dresses': '#4a7c59', 'outerwear': '#2c5530', 'accessories': '#0a361b' };
+    return colors[category] || '#7ba05b';
+}
+
+function renderWardrobe(items = wardrobeItems) {
+    const grid = document.getElementById('itemsGrid');
+    grid.innerHTML = items.map(item => `
+        <div class="item-card" onclick="showItemDetail(${item.id})">
+            <div class="item-image" style="background: ${getCategoryColor(item.category)}">${item.emoji}</div>
+            <div class="item-info">
+                <h4 title="${item.name}">${item.name}</h4>
+                <div class="item-stats">
+                    <span>CPW: ${formatPrice(item.price / Math.max(item.wearCount, 1))}</span>
+                    <span class="wear-count">${item.wearCount}x dipakai</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterItems() {
+    const categories = Array.from(document.querySelectorAll('#wardrobe .filter-section:nth-child(1) input:checked')).map(cb => cb.value);
+    const colors = Array.from(document.querySelectorAll('#wardrobe .filter-section:nth-child(2) input:checked')).map(cb => cb.value);
+    const frequencies = Array.from(document.querySelectorAll('#wardrobe .filter-section:nth-child(3) input:checked')).map(cb => cb.value);
+
+    // Handle 'all' category being checked
+    let allCategories = ['tops', 'bottoms', 'dresses', 'outerwear', 'accessories'];
+    if (categories.length === 1 && categories[0] === 'all') {
+         // Do nothing, keep allCategories intact
+    } else if (categories.length > 0 && !categories.includes('all')) {
+        allCategories = categories;
+    } else if (categories.length === 0) {
+         allCategories = ['tops', 'bottoms', 'dresses', 'outerwear', 'accessories']; // Default: show all if no category selected
+    }
+
+    const filtered = wardrobeItems.filter(item => {
+        const categoryMatch = allCategories.includes(item.category);
+        const colorMatch = colors.length === 0 || colors.includes(item.color);
+
+        let frequencyMatch = frequencies.length === 0;
+        if (!frequencyMatch) {
+            if (frequencies.includes('frequent') && item.wearCount >= 10) frequencyMatch = true;
+            if (frequencies.includes('moderate') && item.wearCount >= 1 && item.wearCount < 10) frequencyMatch = true;
+            if (frequencies.includes('never') && item.wearCount === 0) frequencyMatch = true;
+        }
+
+        return categoryMatch && colorMatch && frequencyMatch;
+    });
+
+    renderWardrobe(filtered);
+}
+
+function loadMarketplace() {
+    filterProducts('all'); // Load all by default
+}
+
+function searchProducts() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    let filteredProducts = marketplaceProducts.filter(product => 
+        product.name.toLowerCase().includes(query) || 
+        product.category.toLowerCase().includes(query) ||
+        product.seller.toLowerCase().includes(query)
+    );
+
+    if (query.trim() === '') {
+         filteredProducts = marketplaceProducts;
+    }
+
+    const grid = document.getElementById('productsGrid');
+    if (filteredProducts.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; grid-column: 1 / -1; padding: 2rem; color: var(--text-light);">Tidak ada produk yang cocok dengan pencarian Anda.</div>';
+        return;
+    }
+    
+    grid.innerHTML = filteredProducts.map(product => `
+         <div class="product-card" onclick="viewProduct(${product.id})">
+             <div class="product-image" style="background: ${product.category === 'secondhand' ? '#f0ad4e' : product.category === 'sustainable' ? '#5cb85c' : '#5bc0de'}">${product.emoji}</div>
+             <div class="product-info">
+                 <h4 class="product-title">${product.name}</h4>
+                 <div class="product-price">${formatPrice(product.price)}${product.category === 'rental' ? '/3 days' : ''}</div>
+                 <div class="sustainability-badge">${product.sustainability}</div>
+                 <p>by ${product.seller}</p>
+             </div>
+         </div>
+     `).join('');
+}
+
+function handleSearchKeypress(event) {
+    if (event.key === 'Enter') {
+        searchProducts();
+    }
+}
+    
+    // --- R-4: Marketplace Payment (Restored & Enhanced) ---
+    function checkoutProduct(productId, price) {
+        const product = marketplaceProducts.find(p => p.id === productId);
+        if (!product) return;
+
+        if (!checkSpendingLimit(price)) { return; }
+
+        document.getElementById('paymentAmount').textContent = formatPrice(price);
+        document.getElementById('paymentItemName').textContent = product.name;
+        
+        document.getElementById('paymentModal').dataset.productId = productId;
+        document.getElementById('paymentModal').dataset.productPrice = price;
+
+        openModal('paymentModal');
+    }
+
+    function viewProduct(productId) {
+    const product = marketplaceProducts.find(p => p.id === productId);
+    if (!product) return;
+    
+    showSweetAlert(
+        `${product.emoji} ${product.name}`,
+        `
+            <div style="text-align: left;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="font-size: 4rem; margin-bottom: 0.5rem;">${product.emoji}</div>
+                    <div class="product-price" style="font-size: 1.8rem; color: var(--primary-green); font-weight: bold; margin-bottom: 0.5rem;">
+                        ${formatPrice(product.price)}${product.category === 'rental' ? '<span style="font-size: 0.9rem;"> / 3 days</span>' : ''}
+                    </div>
+                    <div class="sustainability-badge" style="display: inline-block; background: var(--light-green); color: var(--forest-green); padding: 0.5rem 1rem; border-radius: 20px; margin: 0.5rem 0;">${product.sustainability}</div>
+                </div>
+                <p><strong>Deskripsi:</strong> ${product.details}</p>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button onclick="this.closest('.modal').remove(); checkoutProduct(${product.id}, ${product.price})" class="btn-primary">
+                        ${product.category === 'rental' ? '📅 Sewa Sekarang' : '🛒 Beli Sekarang'}
+                    </button>
+                    <button onclick="this.closest('.modal').remove(); addToWishlistFromProduct('${product.name}', ${product.price})" class="btn-primary" style="background: #ffa500; margin-top: 0.5rem;">❤️ Tambah ke Wishlist</button>
+                </div>
+            </div>
+        `,
+        'info'
+    );
+}
+    
+    function completePayment(method) {
+        const modal = document.getElementById('paymentModal');
+        const productId = parseInt(modal.dataset.productId);
+        const price = parseInt(modal.dataset.productPrice);
+        const product = marketplaceProducts.find(p => p.id === productId);
+
+        if (!product || !checkSpendingLimit(0)) {
+            showNotification('Pembayaran dibatalkan karena batasan/limit.', 'error');
+            return;
+        }
+
+        spentThisMonth += price;
+        dailyPurchaseCount++;
+        userRewards.tradePoints += 10;
+
+        closeModal('paymentModal');
+        showSweetAlert('🎉 Pembayaran Sukses!', `${product.name} berhasil dibeli via ${method}. +10 Trade Points!`, 'success');
+        
+        if (product.category !== 'rental') {
+            const newItem = { 
+                id: Date.now(), 
+                name: product.name, 
+                category: 'accessories', 
+                color: 'multi', 
+                price: price, 
+                brand: product.seller, 
+                wearCount: 0, 
+                lastWorn: null, 
+                emoji: product.emoji 
+            }; 
+            wardrobeItems.push(newItem);
+        }
+
+        loadDashboard();
+        loadShopping();
+    }
+// --- KELOMPOK FUNGSI MIX & MATCH YANG DIPERBAIKI ---
+
+// Fungsi helper: Pilih item "terbaik" (yang paling sedikit dipakai)
+const selectBestItem = (items) => {
+    if (items.length === 0) return null;
+
+    // Temukan jumlah pakai (wearCount) minimum
+    const minWearCount = Math.min(...items.map(item => item.wearCount));
+
+    // Ambil semua item dengan wearCount minimum tersebut
+    const leastWornItems = items.filter(item => item.wearCount === minWearCount);
+
+    // Pilih satu item secara acak dari yang paling sedikit dipakai (untuk variasi)
+    return leastWornItems[Math.floor(Math.random() * leastWornItems.length)];
+};
+
+// Fungsi UTAMA yang menghasilkan outfit secara cerdas dari wardrobeItems
+function generateOutfit() {
+    if (wardrobeItems.length < 2) {
+        return { error: "Tambahkan minimal 2 item (Atasan & Bawahan/Dress) ke lemari Anda untuk menggunakan fitur ini!" };
+    }
+    
+    // 1. Kelompokkan item di lemari berdasarkan kategori
+    const categories = {
+        tops: wardrobeItems.filter(item => item.category === 'tops'),
+        bottoms: wardrobeItems.filter(item => item.category === 'bottoms'),
+        dresses: wardrobeItems.filter(item => item.category === 'dresses'),
+        outerwear: wardrobeItems.filter(item => item.category === 'outerwear'),
+        accessories: wardrobeItems.filter(item => item.category === 'accessories')
+    };
+
+    let outfit = {};
+    let requiredCategories = ['tops', 'bottoms'];
+    
+    // Tentukan apakah akan menggunakan Dress atau Top+Bottom (Peluang 50%)
+    if (categories.dresses.length > 0 && categories.tops.length + categories.bottoms.length > 0 && Math.random() > 0.5) {
+        requiredCategories = ['dresses']; // Pilih Dress
+    } else if (categories.tops.length === 0 || categories.bottoms.length === 0) {
+        // Fallback jika Top/Bottom tidak lengkap, tapi ada Dress
+        if (categories.dresses.length > 0) {
+             requiredCategories = ['dresses'];
+        } else {
+            return { error: "Tidak ada cukup item di lemari Anda untuk membuat pakaian dasar (Atasan dan Bawahan/Dress)." };
+        }
+    }
+    
+    let canGenerate = true;
+    for (const category of requiredCategories) {
+        const item = selectBestItem(categories[category]);
+        if (item) {
+            outfit[category] = item;
+        } else {
+            canGenerate = false;
+            break;
+        }
+    }
+
+    if (!canGenerate) {
+        // Jika item inti tidak ada, kembalikan error
+        return { error: "Tidak ada cukup item di lemari Anda untuk membuat pakaian dasar (Atasan dan Bawahan/Dress)." };
+    }
+
+    // Tambahkan item opsional (Outerwear dan Accessories) dengan peluang 50%
+    if (categories.outerwear.length > 0 && Math.random() > 0.5) {
+        outfit.outerwear = selectBestItem(categories.outerwear);
+    }
+    if (categories.accessories.length > 0 && Math.random() > 0.5) {
+        outfit.accessories = selectBestItem(categories.accessories);
+    }
+
+    // Panggil fungsi untuk menampilkan hasil
+    renderOutfit(outfit);
+}
+
+
+// Fungsi untuk menampilkan hasil generateOutfit (Menggantikan fungsi 'mixAndMatch' yang lama)
+function renderOutfit(outfit) {
+    if (outfit.error) {
+         showSweetAlert('Gagal Generate Outfit', outfit.error, 'warning');
+         return;
+    }
+
+    const outfitHtml = Object.values(outfit).map(item => `
+        <div style="background: var(--cream); padding: 1rem; border-radius: 8px; margin: 0.5rem 0;">
+            <h4 style="color: var(--forest-green);">${item.emoji} ${item.name}</h4>
+            <p style="font-size: 0.9rem;">${item.category.charAt(0).toUpperCase() + item.category.slice(1)} | Dipakai ${item.wearCount}x</p>
+        </div>
+    `).join('');
+    
+    // Pilih item utama untuk tombol detail (Top/Dress)
+    const mainItem = outfit.dresses || outfit.tops; 
+    const mainItemId = mainItem ? mainItem.id : null;
+
+    showSweetAlert(
+        '✨ Outfit Rekomendasi Terbaik Hari Ini!',
+        `
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <p>AI merekomendasikan kombinasi ini untuk memaksimalkan penggunaan item yang jarang Anda pakai. **Cost/Wear terbaik!**</p>
+            </div>
+            ${outfitHtml}
+            ${mainItemId ? `<button class="btn-primary" style="margin-top: 1.5rem;" onclick="showItemDetail(${mainItemId})">Lihat Detail Item Utama</button>` : ''}
+        `,
+        'success'
+    );
+}
+// --- R-9: Perbaikan Filter Marketplace dan Load Marketplace ---
+
+function loadMarketplace() {
+    filterProducts('all'); // Memanggil filterProducts untuk memuat semua produk saat halaman dimuat
+}
+
+function filterProducts(category, event) {
+    // 1. Mengatur status aktif pada tombol filter (chip)
+    document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+    
+    // Menetapkan status 'active' ke chip yang baru diklik
+    if (event && event.target) {
+        event.target.classList.add('active');
+    } else {
+        // Fallback untuk inisialisasi awal (jika dipanggil dari loadMarketplace)
+        const targetChip = document.querySelector(`.filter-chip[onclick*="filterProducts('${category}'"]`);
+        if(targetChip) targetChip.classList.add('active');
+    }
+    
+    // 2. Memfilter produk berdasarkan kategori yang dipilih
+    const filteredProducts = category === 'all' ? 
+        marketplaceProducts : 
+        marketplaceProducts.filter(product => product.category === category);
+    
+    // 3. Merender produk di grid
+    const grid = document.getElementById('productsGrid');
+    
+    if (filteredProducts.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; grid-column: 1 / -1; padding: 2rem; color: var(--text-light);">Tidak ada produk yang cocok dengan kategori ini.</div>';
+        return;
+    }
+    
+    grid.innerHTML = filteredProducts.map(product => `
+         <div class="product-card" onclick="viewProduct(${product.id})">
+             <div class="product-image" style="background: ${product.category === 'secondhand' ? '#f0ad4e' : product.category === 'sustainable' ? '#5cb85c' : '#5bc0de'}">${product.emoji}</div>
+             <div class="product-info">
+                 <h4 class="product-title">${product.name}</h4>
+                 <div class="product-price">${formatPrice(product.price)}${product.category === 'rental' ? '/3 days' : ''}</div>
+                 <div class="sustainability-badge">${product.sustainability}</div>
+                 <p>by ${product.seller}</p>
+             </div>
+         </div>
+     `).join('');
+}
+// Catatan: Pastikan di HTML Anda, tombol Mix & Match memanggil generateOutfit().
+// Contoh: <button class="action-btn" onclick="generateOutfit()">✨ Generate Outfit</button>
+    // --- R-6: Item Trading Detail (Perbaikan) ---
+    function loadTradePage() {
+        const container = document.getElementById('tradeOffersList');
+        const tradeableItems = getRarelyWornItems();
+
+        if (tradeableItems.length === 0) {
+            container.innerHTML = `<div class="challenge-card" style="text-align: center;"><h3>Anda Tidak Memiliki Item yang Perlu Ditukar</h3><p>Semua item Anda sering dipakai. Trade berlaku untuk item dengan Wear Count < 3. Teruslah pakai pakaian Anda!</p></div>`;
+            return;
+        }
+
+        container.innerHTML = tradeOffersData.map(offer => {
+            const userItem = wardrobeItems.find(item => item.id === offer.userItem);
+            if (!userItem) return '';
+
+            return `
+                <div class="trade-card" onclick="viewTradeDetail(${offer.id})">
+                    <div>
+                        <h4>${offer.offerItem.emoji} ${offer.offerItem.name}</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-dark);">Tukar dengan: ${userItem.emoji} ${userItem.name}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="challenge-status" style="background: ${offer.partnerStatus === 'accepted' ? '#51CF66' : '#FF6B6B'}; color: white; padding: 0.3rem 0.6rem; border-radius: 12px;">
+                            ${offer.partnerStatus === 'accepted' ? 'Partner Setuju' : 'Menunggu Partner'}
+                        </span>
+                        <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 5px;">Dari: ${offer.partnerName}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function showTradePage() {
+        loadTradePage();
+        showPage('tradePage', { target: document.querySelector('.action-btn[onclick="showTradePage()"]') });
+    }
+    
+    function viewTradeDetail(tradeId) {
+        const offer = tradeOffersData.find(t => t.id === tradeId);
+        if (!offer) return;
+
+        currentTradeOffer = offer;
+        const userItem = wardrobeItems.find(item => item.id === offer.userItem);
+        if (!userItem) {
+             showNotification('Item Anda yang akan ditukar sudah tidak ada di lemari.', 'error');
+             return;
+        }
+
+        const tradeItemInfo = document.getElementById('tradeItemInfo');
+        tradeItemInfo.innerHTML = `
+            <h3 style="color: var(--primary-green); text-align: center; margin-bottom: 1rem;">Proposal Trade</h3>
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; margin: 1rem 0; padding: 1.5rem; border: 1px solid var(--cream); border-radius: 12px;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${offer.offerItem.emoji}</div>
+                    <strong>Anda Akan Menerima:</strong><br>
+                    <p>${offer.offerItem.name}</p>
+                </div>
+                <div style="font-size: 2rem; color: var(--dark-green);">⇆</div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${userItem.emoji}</div>
+                    <strong>Anda Memberi:</strong><br>
+                    <p>${userItem.name}</p>
+                </div>
+            </div>
+        `;
+        
+        const userTradeItemSelect = document.getElementById('userTradeItemSelect');
+        userTradeItemSelect.innerHTML = wardrobeItems
+            .filter(item => item.wearCount < 3)
+            .map(item => `<option value="${item.id}" ${item.id === userItem.id ? 'selected' : ''}>${item.name} (Worn ${item.wearCount}x)</option>`)
+            .join('');
+        
+        document.getElementById('userTradeStatus').textContent = offer.userStatus === 'accepted' ? 'Setuju' : 'Belum Setuju';
+        document.getElementById('partnerTradeStatus').textContent = offer.partnerStatus === 'accepted' ? offer.partnerName + ' Setuju' : 'Menunggu Partner';
+        document.getElementById('userTradeStatus').style.color = offer.userStatus === 'accepted' ? '#51CF66' : '#dc3545';
+        document.getElementById('partnerTradeStatus').style.color = offer.partnerStatus === 'accepted' ? '#51CF66' : '#dc3545';
+        document.getElementById('agreeTradeBtn').textContent = offer.userStatus === 'accepted' ? 'Menunggu Konfirmasi' : '✅ Setujui Penukaran';
+        document.getElementById('agreeTradeBtn').disabled = offer.userStatus === 'accepted';
+        
+        openModal('tradeDetailModal');
+    }
+// Fungsi ini harus ada di bagian Wardrobe Functions atau di bagian atas script
+function getCategoryColor(category) {
+    const colors = { 'tops': '#a8cc8a', 'bottoms': '#7ba05b', 'dresses': '#4a7c59', 'outerwear': '#2c5530', 'accessories': '#0a361b' };
+    return colors[category] || '#7ba05b';
+}
+
+// Fungsi ini harus ada di bagian Wardrobe Functions
+function showItemDetail(itemId) {
+    const item = wardrobeItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    showSweetAlert(
+        `${item.emoji} Detail Item: ${item.name}`,
+        `
+            <div style="text-align: left;">
+                <div class="image-placeholder">${item.emoji} Gambar ${item.name}</div>
+                <p><strong>Brand:</strong> ${item.brand}</p>
+                <p><strong>Kategori:</strong> ${item.category}</p>
+                <p><strong>Warna:</strong> ${item.color.charAt(0).toUpperCase() + item.color.slice(1)}</p>
+                <p><strong>Harga Beli:</strong> ${formatPrice(item.price)}</p>
+                <p><strong>Total Dipakai:</strong> <strong style="color: var(--forest-green);">${item.wearCount}x</strong></p>
+                <p><strong>Cost Per Wear (CPW):</strong> <strong style="color: var(--dark-green);">${formatPrice(item.price / Math.max(item.wearCount, 1))}</strong></p>
+                <p><strong>Terakhir Dipakai:</strong> ${item.lastWorn || 'Belum pernah'}</p>
+            </div>
+            <button class="btn-primary" onclick="markAsWorn(${item.id})" style="margin-top: 1.5rem; width: 100%;">
+                ✅ Tandai Sudah Dipakai Hari Ini
+            </button>
+        `,
+        'info'
+    );
+}
+
+// Fungsi ini harus ada dan dipanggil dari dalam showItemDetail
+function markAsWorn(itemId) {
+    const item = wardrobeItems.find(i => i.id === itemId);
+    if (item) { 
+        item.wearCount++; 
+        item.lastWorn = new Date().toISOString().split('T')[0]; 
+        showNotification(`${item.name} ditandai sudah dipakai! Total: ${item.wearCount}x`, 'success'); 
+        document.querySelector('.modal.active')?.remove(); 
+        loadDashboard(); 
+        // Tambahkan renderWardrobe() di sini untuk refresh tampilan jika di halaman Lemari
+        if (document.getElementById('wardrobe').classList.contains('active')) {
+            renderWardrobe();
+        }
+    }
+}
+    function agreeToTrade() {
+        if (!currentTradeOffer) return;
+        currentTradeOffer.userStatus = 'accepted';
+        document.getElementById('userTradeStatus').textContent = 'Setuju';
+        document.getElementById('userTradeStatus').style.color = '#51CF66';
+        document.getElementById('agreeTradeBtn').textContent = 'Menunggu Konfirmasi';
+        document.getElementById('agreeTradeBtn').disabled = true;
+        showNotification('Persetujuan Anda telah dikirim! Menunggu konfirmasi dari partner trade...', 'info', 4000);
+        if (currentTradeOffer.partnerStatus === 'accepted') { setTimeout(() => { completeTradeFinal(currentTradeOffer); }, 2000); }
+    }
+
+    function completeTradeFinal(offer) {
+        const userItemIndex = wardrobeItems.findIndex(item => item.id === offer.userItem);
+        if (userItemIndex === -1) { showNotification('Gagal: Item Anda sudah tidak ditemukan di lemari.', 'error'); closeModal('tradeDetailModal'); return; }
+        wardrobeItems.splice(userItemIndex, 1);
+        const newItem = { id: Date.now(), name: offer.offerItem.name, category: offer.offerItem.category, color: offer.offerItem.color, price: 0, brand: 'Traded', wearCount: 0, lastWorn: null, emoji: offer.offerItem.emoji }; wardrobeItems.push(newItem); userRewards.tradePoints += 10;
+        closeModal('tradeDetailModal'); showSweetAlert('🎉 Trade Sukses!', `Penukaran **${newItem.name}** berhasil! Detail alamat akan dikirimkan. +10 Trade Points.`, 'success');
+        loadDashboard(); loadTradePage();
+    }
+
+
+    // --- R-7: Donasi Pakaian Detail ---
+    function showDonationOptions() {
+        const donatableItems = wardrobeItems.filter(item => item.wearCount <= 1);
+        
+        if (donatableItems.length === 0) {
+             showSweetAlert('Tidak Ada Item Potensial Donasi', 'Item yang paling baik didonasikan adalah yang jarang dipakai atau memiliki nilai rendah. Anda bisa memilih item secara manual jika tetap ingin berdonasi.', 'warning');
+             return;
+        }
+        
+        const listContainer = document.getElementById('donatableItemsList');
+        listContainer.innerHTML = donatableItems.map(item => `
+            <div class="trade-card">
+                <div>
+                    <input type="checkbox" id="donate-${item.id}" value="${item.id}" style="margin-right: 10px; accent-color: var(--primary-green);">
+                    <label for="donate-${item.id}"><strong>${item.emoji} ${item.name}</strong></label>
+                </div>
+                <span style="font-size: 0.9rem; color: var(--text-light);">Dipakai ${item.wearCount}x</span>
+            </div>
+        `).join('');
+        
+        openModal('donationSelectionModal');
+    }
+
+    function confirmDonation() {
+        const checkedItems = Array.from(document.querySelectorAll('#donatableItemsList input:checked')).map(input => parseInt(input.value));
+        const targetName = document.getElementById('donationTargetSelect').options[document.getElementById('donationTargetSelect').selectedIndex].text;
+        if (checkedItems.length === 0) { showNotification('Pilih minimal 1 item untuk didonasikan.', 'warning'); return; }
+        const donatedItemsCount = checkedItems.length; wardrobeItems = wardrobeItems.filter(item => !checkedItems.includes(item.id));
+        userRewards.donations += donatedItemsCount; userRewards.tradePoints += donatedItemsCount * 5;
+        closeModal('donationSelectionModal');
+        showSweetAlert('🎉 Donasi Berhasil!', `<h4>Terima kasih atas donasi **${donatedItemsCount} item**!</h4><p>Donasi Anda akan disalurkan kepada **${targetName}**.</p><p style="margin-top: 1rem; color: var(--primary-green); font-weight: 600;">+${donatedItemsCount * 5} Trade Points diterima!</p>`, 'success');
+        loadDashboard();
+    }
+
+    // --- R-5: Community Challenge Update Progress ---
+    function updateNoBuyChallenge() {
+        if (noBuyProgressDays < 30) {
+             noBuyProgressDays = noBuyDays = 1;
+             document.getElementById('noBuyProgress').textContent = noBuyProgressDays;
+             document.querySelector('#challengesTab .budget-fill').style.width = (noBuyProgressDays / 30) * 100 + '%';
+             showNotification(`Hari ${noBuyProgressDays} selesai! Tinggal ${30 - noBuyProgressDays} hari lagi.`, 'success');
+             if (noBuyProgressDays === 30) {
+                 userRewards.tradePoints += 50;
+                 showSweetAlert('🏆 Challenge Completed!', 'Anda menyelesaikan 30-Day No-Buy Challenge! +50 Trade Points!', 'success');
+             }
+             loadDashboard();
+        } else {
+             showNotification('Challenge sudah selesai! Selamat!', 'info');
+        }
+    }
+    
+    // --- Marketplace: Shopping Assistant & Wishlist ---
+    function updateBudgetDisplay() {
+        const percentage = Math.min(100, (spentThisMonth / monthlyBudget) * 100);
+        const remaining = Math.max(0, monthlyBudget - spentThisMonth);
+        document.getElementById('spentAmount').textContent = spentThisMonth.toLocaleString('id-ID');
+        document.getElementById('budgetLimit').textContent = monthlyBudget.toLocaleString('id-ID');
+        document.getElementById('budgetPercentage').textContent = Math.round(percentage) + '%';
+        document.getElementById('budgetFill').style.width = percentage + '%';
+        document.getElementById('dailyPurchases').textContent = dailyPurchaseCount;
+        document.getElementById('remainingBudget').textContent = formatPrice(remaining);
+        const fillElement = document.getElementById('budgetFill');
+        if (percentage > 90) { fillElement.style.background = '#dc3545'; } else if (percentage > 70) { fillElement.style.background = '#ffc107'; } else { fillElement.style.background = 'var(--gradient-green)'; }
+    }
+    function loadShopping() { updateBudgetDisplay(); renderWishlist(); updateRewardsDisplay(); }
+    function renderWishlist() {
+        const container = document.getElementById('wishlistItems');
+        if (wishlistItems.length === 0) { container.innerHTML = '<p style="color: var(--text-light); font-style: italic; text-align: center; padding: 2rem;">Wishlist Anda kosong.</p>'; return; }
+        container.innerHTML = wishlistItems.map(item => {
+            const daysAdded = Math.floor((new Date() - item.addedDate) / (1000 * 60 * 60 * 24));
+            const daysLeft = Math.max(0, 30 - daysAdded);
+            const canPurchase = daysLeft === 0;
+            return `<div class="wishlist-item" style="${canPurchase ? 'border: 2px solid var(--primary-green);' : ''}"><div><h4>${item.name} ${canPurchase ? '🎉' : ''}</h4><p style="font-size: 0.85rem; color: var(--text-light);">Ditambahkan ${daysAdded} hari lalu</p>${canPurchase ? `<p style="color: var(--primary-green); font-weight: 600;">Siap untuk dibeli!</p>` : ''}</div><div>${canPurchase ? `<button onclick="purchaseFromWishlist(${item.id})" class="btn-primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; margin: 0.25rem;">Beli Sekarang</button>` : `<div class="countdown">${daysLeft} hari lagi</div>`}<button onclick="removeFromWishlist(${item.id})" class="btn-primary" style="background: #dc3545; font-size: 0.7rem; padding: 0.3rem 0.6rem; margin-top: 0.25rem;">Hapus</button></div></div>`;
+        }).join('');
+    }
+    function purchaseFromWishlist(itemId) {
+        const item = wishlistItems.find(item => item.id === itemId);
+        if (!item || Math.floor((new Date() - item.addedDate) / (1000 * 60 * 60 * 24)) < 30) { showNotification('Item belum melewati masa tunggu 30 hari!', 'warning'); return; }
+        if (!checkSpendingLimit(item.price)) { return; }
+        removeFromWishlist(itemId); spentThisMonth += item.price; dailyPurchaseCount++; userRewards.tradePoints += 15;
+        const newWardrobeItem = { id: Date.now(), name: item.name, category: 'tops', color: 'blue', price: item.price, brand: 'Mindful Buy', wearCount: 0, lastWorn: null, emoji: '🛍️' }; wardrobeItems.push(newWardrobeItem);
+        showSweetAlert('🎉 Pembelian Berhasil!', `${item.name} berhasil dibeli. +15 Poin untuk Pembelian Mindful!`, 'success');
+        updateBudgetDisplay(); loadDashboard();
+    }
+    function addToWishlist() { 
+        const itemName = document.getElementById('wishlistItem').value.trim();
+        const itemPrice = parseInt(document.getElementById('wishlistPrice').value);
+        if (!itemName || isNaN(itemPrice) || itemPrice <= 0) {
+             showNotification('Harap isi Nama Item dan Harga yang valid!', 'error');
+             return;
+        }
+        showNotification('Item ditambahkan ke Wishlist. Lakukan pembelian secara bijak!', 'success'); 
+        wishlistItems.push({id: Date.now(), name: itemName, price: itemPrice, addedDate: new Date(), waitingPeriod: 30}); 
+        document.getElementById('wishlistItem').value = '';
+        document.getElementById('wishlistPrice').value = '';
+        renderWishlist(); 
+    }
+    function removeFromWishlist(itemId) { wishlistItems = wishlistItems.filter(item => item.id !== itemId); showNotification('Item dihapus dari wishlist.', 'info'); renderWishlist(); }
+    function addToWishlistFromProduct(productName, price) { showNotification(`${productName} ditambahkan ke Wishlist 30-Hari!`, 'success'); wishlistItems.push({id: Date.now(), name: productName, price: price, addedDate: new Date(), waitingPeriod: 30}); renderWishlist(); }
+
+
+    // --- R-10: Community Tab Switching ---
+    function showCommunityTab(tabId, event) {
+        document.querySelectorAll('.community-content').forEach(content => content.classList.remove('active'));
+        document.getElementById(`${tabId}Tab`).classList.add('active');
+        
+        document.querySelectorAll('.community-tab').forEach(tab => tab.classList.remove('active'));
+        if (event && event.target) { 
+            event.target.classList.add('active'); 
+        } else {
+             const targetButton = document.querySelector(`.community-tab[onclick*="showCommunityTab('${tabId}'"]`);
+             if (targetButton) targetButton.classList.add('active');
+        }
+    }
+    
+    // --- Other Placeholder Functions ---
+    function checkSpendingLimit(amount) {
+        const newTotal = spentThisMonth + amount;
+        if (newTotal > spendingLimit) { showSweetAlert('Batas Pengeluaran Terlampaui!', `Pembelian ini akan melebihi batas pengeluaran bulanan Anda. Coba opsi *secondhand* atau *trading*.`, 'warning'); return false; }
+        if (dailyPurchaseCount >= dailyPurchaseLimit) { showSweetAlert('Batas Pembelian Harian Tercapai!', `Anda telah mencapai batas pembelian harian. Lanjutkan berbelanja besok!`, 'warning'); return false; }
+        return true;
+    }
+    function checkBrandSustainability() { showNotification('Simulasi: Brand mendapatkan rating "Good" (75/100).', 'info'); }
+    function viewImpact() { showPage('community', { target: document.querySelector('.community-tab[onclick*="showCommunityTab(\'impact\')"]') }); }
+    function showItemBreakdown() { showSweetAlert('Item Breakdown', 'Menampilkan rincian item berdasarkan kategori.', 'info'); }
+    function showValueBreakdown() { showSweetAlert('Value Breakdown', 'Menampilkan nilai total pakaian dan distribusi per kategori.', 'info'); }
+    function showCostPerWearAnalysis() { showSweetAlert('Cost/Wear Analysis', 'Menampilkan analisis biaya per pemakaian item.', 'info'); }
+    function showSustainabilityTips() { showSweetAlert('Sustainability Tips', 'Menampilkan skor keberlanjutan dan tips personalisasi.', 'info'); }
+    function joinChallenge() { userRewards.tradePoints += 20; showSweetAlert('Challenge Joined!', 'Anda telah bergabung dalam Weekly Style Challenge! +20 Trade Points.', 'success'); updateRewardsDisplay(); }
+    function joinEvent() { showNotification('Pendaftaran event berhasil! Cek email Anda untuk detail.', 'success'); }
+    function joinWorkshop() { showNotification('Pendaftaran workshop berhasil! Link Zoom akan dikirim.', 'success'); }
+    function joinUpcyclingWorkshop() { showNotification('Pendaftaran workshop upcycling berhasil!', 'success'); }
+    function showEducationContent(topic) { showNotification(`Menampilkan konten edukasi tentang ${topic.toUpperCase()}...`, 'info'); }
+    function showRewardsDialog() { updateRewardsDisplay(); showSweetAlert('🏆 Dasbor Hadiah Anda', `<div style="text-align: center;"><h3 style="color: var(--primary-green);">${userRewards.sustainabilityLevel}</h3><p style="font-size: 2rem; font-weight: 700;">${userRewards.tradePoints} Poin Trade</p><p>Item Didonasikan: <strong>${userRewards.donations}</strong></p></div>`, 'success'); }
+    function showRareItemsSuggestions() { showSweetAlert('Items Jarang Dipakai', 'Menampilkan item yang jarang dipakai dan saran styling.', 'info'); }
+    function showTailorDetails(tailorName) { showNotification(`Menampilkan detail kontak dan arah ke ${tailorName}...`, 'info'); }
+    function markAsWorn(itemId) {
+        const item = wardrobeItems.find(i => i.id === itemId);
+        if (item) { item.wearCount++; item.lastWorn = new Date().toISOString().split('T')[0]; showNotification(`${item.name} ditandai sudah dipakai! Total: ${item.wearCount}x`, 'success'); document.querySelector('.modal.active')?.remove(); loadDashboard(); renderWardrobe(); }
+    }
+    function updateRewardsDisplay() {
+        const level = userRewards.tradePoints >= 200 ? 'Platinum Sustainer' : userRewards.tradePoints >= 150 ? 'Gold Sustainer' : userRewards.tradePoints >= 100 ? 'Silver Supporter' : 'Bronze Beginner';
+        userRewards.sustainabilityLevel = level;
+        document.getElementById('tradePoints').textContent = userRewards.tradePoints;
+        document.getElementById('itemsDonated').textContent = userRewards.donations;
+        document.getElementById('userLevel').textContent = userRewards.sustainabilityLevel;
+        document.querySelector('.profile-avatar').textContent = level.charAt(0); // Update avatar initial
+    }
+    function updateImpactStats() {
+        const totalWears = wardrobeItems.reduce((sum, item) => sum + item.wearCount, 0);
+        const totalValue = wardrobeItems.reduce((sum, item) => sum + item.price, 0);
+        const avgCostPerWear = totalValue / Math.max(totalWears, 1);
+        const co2Saved = (totalWears * 0.1).toFixed(1);
+        const waterSaved = (totalWears * 50).toLocaleString('id-ID');
+        const moneySaved = (avgCostPerWear * totalWears * 0.2).toLocaleString('id-ID');
+        const impactNumbers = document.querySelectorAll('#impactTab .impact-number');
+        if (impactNumbers.length >= 4) {
+            impactNumbers[0].textContent = co2Saved;
+            impactNumbers[1].textContent = waterSaved;
+            impactNumbers[2].textContent = userRewards.donations;
+            impactNumbers[3].textContent = `Rp ${moneySaved}`;
+        }
+    }
+    function showTutorial(type) { 
+        const tutorials = { 'button': { title: 'Cara Jahit Kancing', steps: ['Siapkan jarum & benang', 'Jahit kancing 6-8 kali', 'Buat simpul kuat'], time: '10 min' }, 'hole': { title: 'Menambal Lubang Kecil', steps: ['Siapkan kain perca', 'Gunting lebih besar dari lubang', 'Jahit keliling dengan rapi'], time: '20 min' }, 'zipper': { title: 'Memperbaiki Resleting', steps: ['Bersihkan gigi resleting', 'Oleskan sabun batangan', 'Gerakkan perlahan'], time: '15 min' }, 'hem': { title: 'Memendekkan Celana', steps: ['Ukur panjang baru', 'Potong, sisakan kelim 3-4cm', 'Jahit kelim dengan tangan/mesin'], time: '30 min' }, 'upcycling-idea': { title: 'Ide Upcycling Dasar', steps: ['Jeans lama -> Tas Tote', 'T-shirt lama -> Kain Lap', 'Kemeja -> Scrunchie'], time: 'Variatif' } };
+        const t = tutorials[type]; showSweetAlert(`📚 ${t.title}`, `<div style="text-align: left;"><p><strong>Waktu Estimasi:</strong> ${t.time}</p><h4 style="margin-top: 1rem; color: var(--forest-green);">Langkah-langkah Singkat:</h4><ol style="margin-left: 1.5rem;">${t.steps.map(s => `<li>${s}</li>`).join('')}</ol><p style="margin-top: 1rem; font-style: italic;">"Memperbaiki adalah tindakan yang paling ramah lingkungan."</p></div>`, 'info');
+    }
+    
+    // --- Initial Load ---
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDashboard();
+        showPage('dashboard'); 
+        loadMarketplace();
+        
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        });
+        updateImpactStats();
+    });
+</script>
+</body>
+</html>
